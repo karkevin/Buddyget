@@ -14,3 +14,47 @@
 - every time an item is post/put/delete, update the family collection with prices.
 
 - toggle between register page and app page using `isAuthenticated`.
+
+**Add user**:
+
+- add to user collection
+- add `group` to the groups collection
+- push the `user` to the `group` field for list of users
+- if the # of users exceeds 2, add to the transactions in `group` field
+
+**Add item**:
+
+- divide the price by number of users in the group
+- `group`: update the `transactions` field in `group` document by the difference of the value with the divided price.
+- add to
+
+Register
+
+1. prompt user to add family (must include more than 2 users)
+2. users can be authenticated, then add/update/remove items.
+3. new users can be added to the family (push to transactions the new user with existing users)
+
+- one way embedding: since num(users) << num(items), use one way embedding where you store users in items.
+
+user functionality:
+
+- register user (done!)
+- delete user
+
+group functionality:
+
+- post (make a group when registering) (done!)
+- get group (get transactions) (done!)
+- put (update transactions)
+- put 2 (delete/add user)
+
+item functionality:
+
+- post: add item -> sends put request to group
+- put: update item -> sends put request to group
+- delete: -> sends put request to group
+
+transactions functionality:
+
+- get: get all transactions
+-
