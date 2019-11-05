@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const itemSchema = new Schema({
   buyer: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: "user",
     required: true
   },
   location: {
@@ -16,7 +16,7 @@ const itemSchema = new Schema({
     required: true
   },
   buyerGroup: {
-    type: [{ type: Schema.Types.ObjectId, ref: "User" }]
+    type: [{ type: Schema.Types.ObjectId, ref: "user" }]
   },
   date: {
     type: Date,

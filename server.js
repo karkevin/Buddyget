@@ -15,6 +15,7 @@ app.use("/api/transactions", require("./routes/api/transactions"));
 
 const db = process.env.mongoURI;
 mongoose.set("useUnifiedTopology", true);
+mongoose.set("useFindAndModify", false);
 mongoose
   .connect(db, {
     useNewUrlParser: true,

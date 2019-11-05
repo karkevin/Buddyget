@@ -4,11 +4,13 @@ const Schema = mongoose.Schema;
 const transactionSchema = new Schema({
   source: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
+    ref: "user",
+    required: true
   },
   destination: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
+    ref: "user",
+    required: true
   },
   money: {
     type: Number,

@@ -44,7 +44,6 @@ router.post("/", (req, res) => {
               jwt.sign(
                 { id: newUser.id },
                 process.env.jwtSecret,
-                { expiresIn: 3600 },
                 (err, token) => {
                   if (err) throw err;
 

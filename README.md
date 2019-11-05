@@ -50,11 +50,13 @@ group functionality:
 
 item functionality:
 
-- post: add item -> sends put request to group
-- put: update item -> sends put request to group
-- delete: -> sends put request to group
+- post: add item -> sends put request to transactions (done!)
+- put: update item -> sends put request to transactions (done)
+- delete: -> sends put request to transactions (done!)
+- get item (ding!)
+- get user's items (yay!)
 
 transactions functionality:
 
-- get: get all transactions
--
+- get: get all transactions (yup)
+- get users transactions (yee)
