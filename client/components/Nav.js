@@ -14,7 +14,7 @@ class Nav extends Component {
   render() {
     return (
       <nav
-        className="flex flex-wrap items-center justify-between py-3 px-2 rounded-b-lg"
+        className="fixed w-full top-0 flex flex-wrap items-center justify-between py-3 px-2 rounded-b-lg"
         style={{ backgroundColor: "#788CFF" }}
       >
         <p className="text-xl text-white font-bold px-3">BuddyGet</p>
@@ -50,7 +50,7 @@ class Nav extends Component {
           <div className="text-sm sm:flex-grow px-3">
             <a
               href="https://github.com/karkevin"
-              className="block mt-4 sm:inline-block sm:mt-0 text-blue-200 hover:text-white mr-12"
+              className="block mt-4 sm:inline-block sm:mt-0 text-blue-200 hover:text-white"
             >
               Github
             </a>

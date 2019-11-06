@@ -60,3 +60,27 @@ transactions functionality:
 
 - get: get all transactions (yup)
 - get users transactions (yee)
+
+### Front-end
+
+**components**:
+
+Transactions (1)
+
+- total expenses (done!)
+- TransactionBox (2) (done!)
+
+ItemList (3)
+
+- transaction button
+- Item (4)
+
+ItemModal (5)
+??? UpdateItemModal
+
+Index.js
+
+- Nav
+- Transactions
+- ItemList
+- (fixed) addButton
