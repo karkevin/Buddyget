@@ -1,12 +1,27 @@
 import React, { Component } from "react";
 
+import ItemModal from "./ItemModal";
+
 class Item extends Component {
+  state = {
+    showItemModal: false
+  };
+
+  toggleItemModal = () => {
+    this.setState({ showItemModal: !this.state.showItemModal });
+  };
+
   render() {
     const { buyer, location, price, buyerGroup } = this.props.item;
     const user = this.props.user;
     return (
       <div className="mb-3 flex justify-between items-center">
-        <div className="">
+        <ItemModal
+          modal={this.state.showItemModal}
+          item={this.props.item}
+          toggle={this.toggleItemModal}
+        />
+        <div>
           <p className="text-left">Sunday 09/23</p>
           <p className="text-left text-lg">
             {buyer} | <span className="text-md">{location}</span>
@@ -14,7 +29,10 @@ class Item extends Component {
         </div>
         <div className="flex">
           <p className="text-lg mr-2">${price}</p>
-          <button className="bg-blue-400 hover:bg-blue-500 p-2 rounded-full">
+          <button
+            onClick={this.toggleItemModal}
+            className="bg-blue-400 hover:bg-blue-500 p-2 rounded-full focus:outline-none"
+          >
             <svg
               className="w-3"
               version="1.1"

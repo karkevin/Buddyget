@@ -1,13 +1,9 @@
 import React, { Component } from "react";
 import Modal from "react-modal";
 
-class ItemModal extends Component {
-  change = val => {
-    return "val";
-  };
-
+class AddItemModal extends Component {
   render() {
-    const { buyer, location, price, buyerGroup, date } = this.props.item;
+    const buyerGroup = ["Allan", "Yunzhi", "Kevin"];
     return (
       <Modal
         isOpen={this.props.modal}
@@ -26,18 +22,13 @@ class ItemModal extends Component {
         }}
       >
         <div className="flex justify-between py-2 mb-2">
-          <p className="text-xl ">Edit Item</p>
-          <div className="flex">
-            <button className="text-lg text-white mr-8 px-1 rounded bg-red-600 hover:bg-red-700">
-              Delete
-            </button>
-            <button
-              className="text-lg px-2 rounded bg-red-400 hover:bg-red-500"
-              onClick={this.props.toggle}
-            >
-              x
-            </button>
-          </div>
+          <p className="text-xl ">Add Item</p>
+          <button
+            className="text-lg px-2 rounded bg-red-400 hover:bg-red-500"
+            onClick={this.props.toggle}
+          >
+            x
+          </button>
         </div>
 
         <hr />
@@ -48,7 +39,7 @@ class ItemModal extends Component {
               type="text"
               name="buyer"
               className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
-              placeholder={buyer}
+              placeholder="Buyer"
             />
           </div>
           <div className="mb-4">
@@ -57,7 +48,7 @@ class ItemModal extends Component {
               type="text"
               name="location"
               className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
-              placeholder={location}
+              placeholder="Location"
             />
           </div>
           <div className="mb-4">
@@ -66,7 +57,6 @@ class ItemModal extends Component {
               type="number"
               name="price"
               className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
-              placeholder={price}
             />
           </div>
           <div className="mb-5">
@@ -91,10 +81,11 @@ class ItemModal extends Component {
               type="date"
               name="date"
               className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
+              placeholder={Date()}
             />
           </div>
           <button className="flex bg-blue-500 hover:bg-blue-600 mx-auto mt-8 px-5 py-1 rounded text-white focus:outline-none items-center">
-            Update Item
+            Add Item
           </button>
         </form>
       </Modal>
@@ -102,4 +93,4 @@ class ItemModal extends Component {
   }
 }
 
-export default ItemModal;
+export default AddItemModal;
