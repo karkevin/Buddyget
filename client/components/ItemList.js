@@ -1,8 +1,17 @@
 import React, { Component } from "react";
+// Allows a state to be connected to this component.
+import { connect } from "react-redux";
+import { getItems } from "../redux/actions/itemActions";
+import PropTypes from "prop-types";
 
 import Item from "./Item";
 
 class ItemList extends Component {
+  static propTypes = {
+    getItems: PropTypes.func.isRequired,
+    item: PropTypes.object.isRequired
+  };
+
   state = {
     user: "Allan",
     items: [
@@ -40,6 +49,11 @@ class ItemList extends Component {
       }
     ]
   };
+  // ? after making an API request, mount the component.
+  componentDidMount() {
+    // calls the method to dispatch action to reducer.
+    this.props.getItems();
+  }
 
   render() {
     return (
@@ -85,4 +99,11 @@ class ItemList extends Component {
   }
 }
 
-export default ItemList;
+const mapStateToProps = state => ({
+  item: state.item
+});
+
+export default connect(
+  mapStateToProps,
+  { getItems }
+)(ItemList);

@@ -6,8 +6,8 @@ import Home from "./home";
 import Register from "./register";
 
 // required to allow components to access the state.
-// import { Provider } from "react-redux";
-// import store from "../redux/store";
+import { Provider } from "react-redux";
+import store from "../redux/store";
 
 class Index extends Component {
   state = {
@@ -15,7 +15,11 @@ class Index extends Component {
   };
 
   render() {
-    return <>{this.state.isAuthenticated ? <Home /> : <Register />}</>;
+    return (
+      <Provider store={store}>
+        {this.state.isAuthenticated ? <Home /> : <Register />}
+      </Provider>
+    );
   }
 }
 
