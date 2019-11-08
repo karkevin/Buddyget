@@ -6,6 +6,16 @@ const app = express();
 // used to parse incoming requests with JSON payload.
 app.use(express.json());
 
+// enable cors
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   next();
+// });
+
 // When user hits the endpoint `/api/items` should refer to the code in items.
 app.use("/api/items", require("./routes/api/items"));
 app.use("/api/users", require("./routes/api/users"));

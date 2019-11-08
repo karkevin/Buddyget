@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API_URL } from "../../config/keys";
 
 import {
   GET_ITEMS,
@@ -18,8 +19,9 @@ export const setItemsLoading = () => {
 
 export const getItems = () => dispatch => {
   dispatch(setItemsLoading());
+  console.log(API_URL);
   axios
-    .get("/api/items")
+    .get(`${API_URL}/api/items`)
     .then(res => {
       dispatch({
         type: GET_ITEMS,

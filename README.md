@@ -84,3 +84,8 @@ Index.js
 - Transactions
 - ItemList
 - (fixed) addButton
+
+**Before Deploy**
+
+- remove `API_URL` from `client/config/keys`
+- remove cors in server
