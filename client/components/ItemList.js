@@ -12,50 +12,13 @@ class ItemList extends Component {
     item: PropTypes.object.isRequired
   };
 
-  state = {
-    user: "Allan",
-    items: [
-      {
-        id: 1,
-        price: 12.3,
-        buyer: "Yunzhi",
-        location: "Loblaws",
-        buyerGroup: ["Yunzhi", "Allan", "Kevin"],
-        date: Date()
-      },
-      {
-        id: 2,
-        price: 20.12,
-        buyer: "Kevin",
-        location: "Dollarama",
-        buyerGroup: ["Yunzhi", "Allan", "Kevin"],
-        date: Date()
-      },
-      {
-        id: 3,
-        price: 15.65,
-        buyer: "Allan",
-        location: "Mashion",
-        buyerGroup: ["Yunzhi", "Allan", "Kevin"],
-        date: Date()
-      },
-      {
-        id: 4,
-        price: 11.11,
-        buyer: "Allan",
-        location: "Loblaws",
-        buyerGroup: ["Yunzhi", "Allan", "Kevin"],
-        date: Date()
-      }
-    ]
-  };
   // ? after making an API request, mount the component.
   componentDidMount() {
     // calls the method to dispatch action to reducer.
     this.props.getItems();
   }
-
   render() {
+    const { items } = this.props.item;
     return (
       <div className="w-full text-center mb-10">
         <button className="text-center bg-gray-400 py-1 px-3 mb-12 rounded-lg focus:outline-none hover:bg-gray-500">
@@ -89,9 +52,9 @@ class ItemList extends Component {
             </g>
           </svg>
         </button>
-        <div id="ItemList" className="w-3/4 m-auto">
-          {this.state.items.map(item => (
-            <Item key={item.id} item={item} user={this.state.user} />
+        <div id="ItemList" className="w-3/4 m-auto max-w-2xl">
+          {items.map(item => (
+            <Item key={item._id} item={item} />
           ))}
         </div>
       </div>

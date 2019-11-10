@@ -18,15 +18,29 @@ export const setItemsLoading = () => {
 };
 
 export const getItems = () => dispatch => {
+  // able to call any actions
   dispatch(setItemsLoading());
-  console.log(API_URL);
   axios
     .get(`${API_URL}/api/items`)
-    .then(res => {
+    .then(res =>
       dispatch({
         type: GET_ITEMS,
         payload: res.data
-      });
-    })
+      })
+    )
     .catch(err => console.log(err));
+};
+
+export const addItem = item => (dispatch, getState) => {
+  axios
+    .post(`${API_URL}/api/items`, item)
+    .then(res =>
+      dispatch({
+        type: ADD_ITEM,
+        payload: res.data
+      })
+    )
+    .catch(err => {
+      console.log(err);
+    });
 };

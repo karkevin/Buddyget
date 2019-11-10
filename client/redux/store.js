@@ -1,6 +1,9 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import rootReducer from "./reducers";
+import { composeWithDevTools } from "redux-devtools-extension";
+
+typeof window !== "undefined";
 
 const initialState = {};
 
@@ -10,11 +13,7 @@ const middleware = [thunk];
 const store = createStore(
   rootReducer,
   initialState,
-  compose(
-    applyMiddleware(...middleware),
-    // ! required for redux devtools. REMOVE ONCE DEPLOY
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
+  composeWithDevTools(applyMiddleware(...middleware))
 );
 
 export default store;

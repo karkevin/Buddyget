@@ -22,6 +22,10 @@ export const TRANSACTIONS_LOADING = "TRANSACTIONS_LOADING";
 export const GET_TRANSACTIONS = "GET_TRANSACTIONS";
 export const GET_USER_TRANSACTIONS = "GET_USER_TRANSACTIONS";
 
+// group actions types
+export const GET_GROUP = "GET_GROUP";
+export const ADD_GROUP = "ADD_GROUP";
+export const GROUP_LOADING = "GROUP_LOADING";
 // error action types
 export const GET_ERRORS = "GET_ERRORS";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";

@@ -30,12 +30,10 @@ router.get("/:id", (req, res) => {
       res.json(items);
     })
     .catch(err =>
-      res
-        .status(400)
-        .json({
-          msg: `Couldn't get user's items with id ${req.params.id}`,
-          err
-        })
+      res.status(400).json({
+        msg: `Couldn't get user's items with id ${req.params.id}`,
+        err
+      })
     );
 });
 
@@ -59,10 +57,11 @@ router.get("/user/:userId", auth, (req, res) => {
     );
 });
 
+// TODO make this private
 // @route   POST api/items
 // @desc    Create an item
 // @access  Private
-router.post("/", auth, (req, res) => {
+router.post("/", (req, res) => {
   const { buyer, location, price, buyerGroup, date } = req.body;
 
   if (!buyer || !location || !price || !buyerGroup) {

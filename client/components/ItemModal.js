@@ -1,19 +1,28 @@
 import React, { Component } from "react";
 import Modal from "react-modal";
 
+// update/delete from here, depending on this.state's values
+
 class ItemModal extends Component {
-  change = val => {
-    return "val";
+  state = {
+    buyer: this.props.item.buyer.name,
+    location: this.props.item.location,
+    buyerGroup: this.props.item.buyerGroup,
+    date: this.props.item.date,
+    price: this.props.item.price
+  };
+
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
   };
 
   render() {
-    const { buyer, location, price, buyerGroup, date } = this.props.item;
     return (
       <Modal
         isOpen={this.props.modal}
         contentLabel="Item Edit Modal"
         ariaHideApp={false}
-        className="bg-white w-11/12 mt-24 m-auto px-4 rounded shadow-lg z-50 overflow-y-auto focus:outline-none"
+        className="bg-white w-11/12 mt-24 m-auto md:mt-20 px-4 max-w-lg rounded shadow-lg z-50 overflow-y-auto focus:outline-none"
         style={{
           overlay: {
             position: "fixed",
@@ -28,11 +37,11 @@ class ItemModal extends Component {
         <div className="flex justify-between py-2 mb-2">
           <p className="text-xl ">Edit Item</p>
           <div className="flex">
-            <button className="text-lg text-white mr-8 px-1 rounded bg-red-600 hover:bg-red-700">
+            <button className="text-lg text-white mr-8 px-1 rounded bg-red-600 hover:bg-red-700 focus:outline-none">
               Delete
             </button>
             <button
-              className="text-lg px-2 rounded bg-red-400 hover:bg-red-500"
+              className="text-lg px-2 rounded bg-red-400 hover:bg-red-500 focus:outline-none"
               onClick={this.props.toggle}
             >
               x
@@ -47,8 +56,9 @@ class ItemModal extends Component {
             <input
               type="text"
               name="buyer"
+              onChange={this.onChange}
               className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
-              placeholder={buyer}
+              value={this.state.buyer}
             />
           </div>
           <div className="mb-4">
@@ -56,8 +66,9 @@ class ItemModal extends Component {
             <input
               type="text"
               name="location"
+              onChange={this.onChange}
               className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
-              placeholder={location}
+              value={this.state.location}
             />
           </div>
           <div className="mb-4">
@@ -65,22 +76,24 @@ class ItemModal extends Component {
             <input
               type="number"
               name="price"
+              onChange={this.onChange}
               className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
-              placeholder={price}
+              value={this.state.price}
             />
           </div>
           <div className="mb-5">
             <label className="block my-3">BuyerGroup:</label>
             <div className="flex items-center justify-start">
-              {buyerGroup.map(member => (
-                <span className="mr-8" key={member}>
+              {this.state.buyerGroup.map(member => (
+                <span className="mr-8" key={member._id}>
                   <input
                     type="checkbox"
-                    name={member}
-                    value={member}
+                    name={member.name}
+                    value={member.name}
+                    onChange={this.onChange}
                     className="mr-1"
                   />
-                  {member}
+                  {member.name}
                 </span>
               ))}
             </div>
@@ -90,6 +103,8 @@ class ItemModal extends Component {
             <input
               type="date"
               name="date"
+              value={this.state.date.substr(0, 10)}
+              onChange={this.onChange}
               className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
             />
           </div>
