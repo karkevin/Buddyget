@@ -9,10 +9,17 @@ import Register from "./register";
 import { Provider } from "react-redux";
 import store from "../redux/store";
 
+// load user dispatch function
+import { loadUser } from "../redux/actions/authActions";
+
 class Index extends Component {
   state = {
     isAuthenticated: true
   };
+
+  componentDidMount() {
+    store.dispatch(loadUser());
+  }
 
   render() {
     return (

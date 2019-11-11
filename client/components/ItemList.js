@@ -18,7 +18,8 @@ class ItemList extends Component {
     this.props.getItems();
   }
   render() {
-    const { items } = this.props.item;
+    let items = [];
+    !this.props.item.loading ? (items = this.props.item.items) : null;
     return (
       <div className="w-full text-center mb-10">
         <button className="text-center bg-gray-400 py-1 px-3 mb-12 rounded-lg focus:outline-none hover:bg-gray-500">

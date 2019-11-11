@@ -12,7 +12,7 @@ class Item extends Component {
   };
 
   // formats the date. Returns the formatted string.
-  formatDate = dateString => {
+  formatDate = () => {
     const weekNames = ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"];
 
     let date = new Date(this.props.item.date);
@@ -20,7 +20,7 @@ class Item extends Component {
   };
 
   render() {
-    // buyer is an object
+    // buyer is the an object
     var buyer = this.props.item.buyer.name;
     buyer = buyer.charAt(0).toUpperCase() + buyer.slice(1);
     const { location, price } = this.props.item;
