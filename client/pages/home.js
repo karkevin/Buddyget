@@ -5,7 +5,7 @@ import Nav from "../components/Nav";
 import Transactions from "../components/Transactions";
 import ItemList from "../components/ItemList";
 import Layout from "../components/Layout";
-import AddItemModal from "../components/AddItemModal";
+import AddItemModal from "../components/modals/AddItemModal";
 
 class Home extends Component {
   state = {

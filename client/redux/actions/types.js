@@ -24,7 +24,8 @@ export const GET_USER_TRANSACTIONS = "GET_USER_TRANSACTIONS";
 
 // group actions types
 export const GET_GROUP = "GET_GROUP";
-export const ADD_GROUP = "ADD_GROUP";
+export const REGISTER_GROUP_SUCCESS = "REGISTER_GROUP_SUCCESS";
+export const REGISTER_GROUP_FAIL = "REGISTER_GROUP_FAIL";
 export const GROUP_LOADING = "GROUP_LOADING";
 // error action types
 export const GET_ERRORS = "GET_ERRORS";

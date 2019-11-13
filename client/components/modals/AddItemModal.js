@@ -3,8 +3,8 @@ import Modal from "react-modal";
 
 // Redux imports
 import { connect } from "react-redux";
-import { getGroup } from "../redux/actions/groupActions";
-import { addItem } from "../redux/actions/itemActions";
+import { getGroup } from "../../redux/actions/groupActions";
+import { addItem } from "../../redux/actions/itemActions";
 import PropTypes from "prop-types";
 
 // TODO change id when auth is added.
@@ -199,7 +199,4 @@ const mapStateToProps = state => ({
   group: state.group
 });
 
-export default connect(
-  mapStateToProps,
-  { getGroup, addItem }
-)(AddItemModal);
+export default connect(mapStateToProps, { getGroup, addItem })(AddItemModal);

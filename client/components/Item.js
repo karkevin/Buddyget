@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import ItemModal from "./ItemModal";
+import ItemModal from "./modals/ItemModal";
 
 class Item extends Component {
   state = {

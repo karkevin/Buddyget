@@ -13,10 +13,6 @@ import store from "../redux/store";
 import { loadUser } from "../redux/actions/authActions";
 
 class Index extends Component {
-  state = {
-    isAuthenticated: true
-  };
-
   componentDidMount() {
     store.dispatch(loadUser());
   }
@@ -24,7 +20,7 @@ class Index extends Component {
   render() {
     return (
       <Provider store={store}>
-        {this.state.isAuthenticated ? <Home /> : <Register />}
+        {store.getState().auth.isAuthenticated ? <Home /> : <Register />}
       </Provider>
     );
   }
