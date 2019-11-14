@@ -16,7 +16,7 @@ import {
 } from "./types";
 
 /* check token and load user.
- * Must get token from localStorage
+ * Must get token from state.
  */
 export const loadUser = () => (dispatch, getState) => {
   // set user loading
@@ -93,9 +93,7 @@ export const loginUser = ({ email, password }) => dispatch => {
       });
     })
     .catch(err => {
-      dispatch(
-        returnErrors(err.response.data, err.response.status, "LOGIN_FAIL")
-      );
+      dispatch(getErrors(err.response.data, err.response.status, "LOGIN_FAIL"));
       dispatch({
         type: LOGIN_FAIL
       });
@@ -111,7 +109,7 @@ export const logoutUser = () => dispatch => {
 // initializes the axios request header to send along a token to the database.
 export const tokenConfig = getState => {
   // get token from localstorage
-  const token = localStorage.getItem("token");
+  const token = getState().auth.token;
 
   const config = {
     headers: {

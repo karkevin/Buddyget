@@ -4,6 +4,7 @@ import React, { Component, Fragment } from "react";
 // pages
 import Home from "./home";
 import Register from "./register";
+import Switch from "../components/Switch";
 
 // required to allow components to access the state.
 import { Provider } from "react-redux";
@@ -20,7 +21,7 @@ class Index extends Component {
   render() {
     return (
       <Provider store={store}>
-        {store.getState().auth.isAuthenticated ? <Home /> : <Register />}
+        <Switch />
       </Provider>
     );
   }

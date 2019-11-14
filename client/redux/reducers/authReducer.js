@@ -9,8 +9,10 @@ import {
   REGISTER_SUCCESS
 } from "../actions/types";
 
+import { loadToken } from "../../config/localStorage";
+
 const initialState = {
-  token: null,
+  token: loadToken(),
   authenticated: null,
   user: null,
   loading: false
@@ -26,7 +28,9 @@ export default function authReducer(state = initialState, action) {
     case "USER_LOADED":
       return {
         ...state,
-        loading: false
+        authenticated: true,
+        loading: false,
+        user: action.payload
       };
     case "LOGIN_SUCCESS":
     case "REGISTER_SUCCESS":

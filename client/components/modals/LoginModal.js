@@ -22,12 +22,47 @@ class LoginModal extends Component {
     open: PropTypes.bool.isRequired,
     toggle: PropTypes.func.isRequired
   };
+
+  componentDidUpdate(prevProps) {
+    const { error, authenticated } = this.props;
+    if (error !== prevProps.error) {
+      // check for login error
+      if (error.id === "LOGIN_FAIL") {
+        this.setState({ msg: error.msg });
+        console.log(error.msg);
+      } else {
+        this.setState({ msg: null });
+      }
+    } else if (this.props.open) {
+      if (authenticated) {
+        this.localToggle();
+      }
+    }
+  }
+  // on change for fields.
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  // form submit
+  onSubmit = e => {
+    e.preventDefault();
+    const { email, password } = this.state;
+    this.props.loginUser({ email, password });
+  };
+
+  // this is to clear errors, if any
+  localToggle = () => {
+    this.props.clearErrors();
+    this.props.toggle();
+  };
+
   render() {
     return (
       <Modal
         isOpen={this.props.open}
         contentLabel="Login Modal"
-        toggleModal={this.props.toggle}
+        toggleModal={this.localToggle}
         ariaHideApp={false}
         className="bg-white w-11/12 mt-48 m-auto max-w-lg px-4 rounded shadow-lg z-50 overflow-y-auto focus:outline-none"
         style={{
@@ -45,19 +80,20 @@ class LoginModal extends Component {
           <p className="text-xl">Login</p>
           <button
             className="text-lg px-2 rounded bg-red-400 hover:bg-red-500"
-            onClick={this.props.toggle}
+            onClick={this.localToggle}
           >
             x
           </button>
         </div>
 
         <hr />
-        <form className="mt-2 mb-8" action="">
+        <form className="mt-2 mb-8" onSubmit={this.onSubmit}>
           <div className="mb-4">
             <label className="block my-3">Email:</label>
             <input
               type="email"
               name="email"
+              onChange={this.onChange}
               className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
               placeholder="Email"
             />
@@ -67,6 +103,7 @@ class LoginModal extends Component {
             <input
               type="password"
               name="password"
+              onChange={this.onChange}
               className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
               placeholder="Password"
             />
