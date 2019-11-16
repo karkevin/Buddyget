@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Link from "next/link";
 
+import Logout from "./Logout";
+
 class Nav extends Component {
   state = {
     // start with the menu closed
@@ -54,6 +56,9 @@ class Nav extends Component {
             >
               Github
             </a>
+          </div>
+          <div className="text-sm sm:flex-grow px-3">
+            <Logout />
           </div>
         </div>
       </nav>

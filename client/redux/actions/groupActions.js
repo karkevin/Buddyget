@@ -18,7 +18,7 @@ export const setGroupLoading = () => {
 /*
  * Registers a group.
  */
-export const registerGroup = name => {
+export const registerGroup = name => dispatch => {
   //headers
   const config = {
     headers: {
@@ -37,10 +37,11 @@ export const registerGroup = name => {
       });
     })
     .catch(err => {
-      dispatch(getErrors(err.response.data, err.response.status));
-      dispatch({
-        type: REGISTER_GROUP_FAIL
-      });
+      // TODO change so you need permission to get Group.
+      // dispatch(getErrors(err.response.data, err.response.status));
+      // dispatch({
+      //   type: REGISTER_GROUP_FAIL
+      // });
     });
 };
 

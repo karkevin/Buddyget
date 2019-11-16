@@ -4,13 +4,53 @@ import Modal from "react-modal";
 // Redux imports
 import { connect } from "react-redux";
 import { registerUser } from "../../redux/actions/authActions";
+import { clearErrors } from "../../redux/actions/errorActions";
 import PropTypes from "prop-types";
 
 class RegisterModal extends Component {
   static propTypes = {
     registerUser: PropTypes.func.isRequired,
+    clearErrors: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
     toggle: PropTypes.func.isRequired
+  };
+
+  state = {
+    group: "",
+    name: "",
+    username: "",
+    email: "",
+    password: "",
+    msg: null
+  };
+
+  componentDidUpdate(prevProps) {
+    const { error, authenticated } = this.props;
+    if (error !== prevProps.error) {
+      if (error.id === "REGISTER_FAIL") {
+        this.setState({ msg: error.msg });
+        console.log(error.msg);
+      } else {
+        this.setState({ msg: null });
+      }
+    } else if (this.props.open && authenticated) {
+      this.localToggle();
+    }
+  }
+
+  onSubmit = e => {
+    e.preventDefault();
+    const { group, name, username, email, password } = this.state;
+    this.props.registerUser({ group, name, email, username, password });
+  };
+
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  localToggle = () => {
+    if (this.state.msg) this.props.clearErrors();
+    this.props.toggle();
   };
 
   render() {
@@ -18,7 +58,7 @@ class RegisterModal extends Component {
       <Modal
         isOpen={this.props.open}
         contentLabel="Register Modal"
-        toggleModal={this.props.toggle}
+        toggleModal={this.localToggle}
         ariaHideApp={false}
         className="bg-white w-11/12 mt-24 m-auto max-w-lg px-4 rounded shadow-lg z-50 overflow-y-auto focus:outline-none"
         style={{
@@ -36,19 +76,28 @@ class RegisterModal extends Component {
           <p className="text-xl">Register</p>
           <button
             className="text-lg px-2 rounded bg-red-400 hover:bg-red-500"
-            onClick={this.props.toggle}
+            onClick={this.localToggle}
           >
             x
           </button>
         </div>
+        {this.state.msg ? (
+          <div
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 my-1 rounded relative"
+            role="alert"
+          >
+            <strong className="font-bold">{this.state.msg.msg}</strong>
+          </div>
+        ) : null}
 
         <hr />
-        <form className="mt-2 mb-8" action="">
+        <form className="mt-2 mb-8" onSubmit={this.onSubmit}>
           <div className="mb-4">
-            <label className="block my-3 mt-5">Family:</label>
+            <label className="block my-3 mt-5">Group:</label>
             <input
               type="text"
               name="group"
+              onChange={this.onChange}
               className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
               placeholder="Group"
             />
@@ -58,8 +107,19 @@ class RegisterModal extends Component {
             <input
               type="text"
               name="name"
+              onChange={this.onChange}
               className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
               placeholder="Full Name"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block my-3 mt-5">Username:</label>
+            <input
+              type="text"
+              name="username"
+              onChange={this.onChange}
+              className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
+              placeholder="Username"
             />
           </div>
           <div className="mb-4">
@@ -67,6 +127,7 @@ class RegisterModal extends Component {
             <input
               type="email"
               name="email"
+              onChange={this.onChange}
               className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
               placeholder="Email"
             />
@@ -76,6 +137,7 @@ class RegisterModal extends Component {
             <input
               type="password"
               name="password"
+              onChange={this.onChange}
               className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
               placeholder="Password"
             />
@@ -102,4 +164,11 @@ class RegisterModal extends Component {
   }
 }
 
-export default RegisterModal;
+const mapStateToProps = state => ({
+  authenticated: state.auth.authenticated,
+  error: state.error
+});
+
+export default connect(mapStateToProps, { registerUser, clearErrors })(
+  RegisterModal
+);

@@ -44,7 +44,7 @@ export const loadUser = () => (dispatch, getState) => {
 export const registerUser = ({
   name,
   email,
-  usernmame,
+  username,
   password,
   group
 }) => dispatch => {
@@ -53,7 +53,7 @@ export const registerUser = ({
       "Content-type": "application/json"
     }
   };
-  const body = JSON.stringify({ name, email, usernmame, password, group });
+  const body = JSON.stringify({ name, email, username, password, group });
 
   // TODO change dispatch to disallow users to be added to a group they don't belong to.
   dispatch(registerGroup(group));
@@ -68,7 +68,7 @@ export const registerUser = ({
     })
     .catch(err => {
       dispatch(
-        returnErrors(err.response.data, err.response.status, "REGISTER_FAIL")
+        getErrors(err.response.data, err.response.status, "REGISTER_FAIL")
       );
       dispatch({
         type: REGISTER_FAIL

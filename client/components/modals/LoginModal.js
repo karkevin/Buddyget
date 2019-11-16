@@ -53,7 +53,7 @@ class LoginModal extends Component {
 
   // this is to clear errors, if any
   localToggle = () => {
-    this.props.clearErrors();
+    if (this.state.msg) this.props.clearErrors();
     this.props.toggle();
   };
 
@@ -85,6 +85,14 @@ class LoginModal extends Component {
             x
           </button>
         </div>
+        {this.state.msg ? (
+          <div
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 my-1 rounded relative"
+            role="alert"
+          >
+            <strong className="font-bold">{this.state.msg.msg}</strong>
+          </div>
+        ) : null}
 
         <hr />
         <form className="mt-2 mb-8" onSubmit={this.onSubmit}>
