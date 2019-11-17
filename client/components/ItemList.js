@@ -17,9 +17,9 @@ class ItemList extends Component {
     // calls the method to dispatch action to reducer.
     this.props.getItems();
   }
+
   render() {
-    let items = [];
-    !this.props.item.loading ? (items = this.props.item.items) : null;
+    const { items } = this.props.item;
     return (
       <div className="w-full text-center mb-10">
         <button className="text-center bg-gray-400 py-1 px-3 mb-12 rounded-lg focus:outline-none hover:bg-gray-500">
@@ -67,7 +67,4 @@ const mapStateToProps = state => ({
   item: state.item
 });
 
-export default connect(
-  mapStateToProps,
-  { getItems }
-)(ItemList);
+export default connect(mapStateToProps, { getItems })(ItemList);

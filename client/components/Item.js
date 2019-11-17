@@ -15,8 +15,9 @@ class Item extends Component {
   formatDate = () => {
     const weekNames = ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"];
 
-    let date = new Date(this.props.item.date);
-    return `${weekNames[date.getDay()]} ${date.getMonth()}/${date.getDate()}`;
+    const date = new Date(this.props.item.date);
+    return `${weekNames[date.getUTCDay()]} ${date.getUTCMonth() +
+      1}/${date.getUTCDate()}`;
   };
 
   render() {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { API_URL } from "../../config/keys";
 
-import { registerGroup } from "./groupActions";
+import { registerGroup, getGroup } from "./groupActions";
 
 import { getErrors } from "./errorActions";
 import {
@@ -25,6 +25,7 @@ export const loadUser = () => (dispatch, getState) => {
   axios
     .get(`${API_URL}/api/auth/user`, tokenConfig(getState))
     .then(res => {
+      dispatch(getGroup(res.data.group));
       dispatch({
         type: USER_LOADED,
         payload: res.data
@@ -87,6 +88,7 @@ export const loginUser = ({ email, password }) => dispatch => {
   axios
     .post(`${API_URL}/api/auth`, body, config)
     .then(res => {
+      dispatch(getGroup(res.data.user.group));
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data

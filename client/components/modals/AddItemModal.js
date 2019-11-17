@@ -3,34 +3,43 @@ import Modal from "react-modal";
 
 // Redux imports
 import { connect } from "react-redux";
-import { getGroup } from "../../redux/actions/groupActions";
 import { addItem } from "../../redux/actions/itemActions";
+import { clearErrors } from "../../redux/actions/errorActions";
 import PropTypes from "prop-types";
 
-// TODO change id when auth is added.
-const groupId = "5dc10d5f4578ce128d11b460";
+const initialState = {
+  buyer: "",
+  location: "",
+  buyerGroup: [],
+  price: 0,
+  date: new Date(),
+  msg: null
+};
 
 class AddItemModal extends Component {
   static propTypes = {
-    getGroup: PropTypes.func.isRequired,
     addItem: PropTypes.func.isRequired,
+    clearErrors: PropTypes.func.isRequired,
     group: PropTypes.object.isRequired,
     modal: PropTypes.bool.isRequired,
     toggle: PropTypes.func.isRequired
   };
 
-  state = {
-    buyer: "",
-    location: "",
-    buyerGroup: [],
-    price: 0,
-    date: new Date()
-  };
+  state = initialState;
 
-  // ? after making an API request, mount the component.
-  componentDidMount() {
-    // calls the method to dispatch action to reducer.
-    this.props.getGroup(groupId);
+  componentDidUpdate(prevProps) {
+    const { error, itemsLength } = this.props;
+    if (error !== prevProps.error) {
+      // check for login error
+      if (error.id === "ITEM_FAIL") {
+        this.setState({ msg: error.msg });
+        console.log(error.msg);
+      } else {
+        this.setState({ msg: null });
+      }
+    } else if (this.props.modal && itemsLength !== prevProps.itemsLength) {
+      this.toggle();
+    }
   }
 
   // for normal form changes
@@ -42,6 +51,7 @@ class AddItemModal extends Component {
     }
   };
 
+  // updates based on user ID.
   buyerChange = e => {
     const name = e.target.value.toLowerCase();
 
@@ -57,12 +67,18 @@ class AddItemModal extends Component {
     this.setState({ buyerGroup: this.checkUsers(e) });
   };
 
+  toggle = () => {
+    if (this.state.msg) this.props.clearErrors();
+    this.setState(initialState);
+    this.props.toggle();
+  };
+
   checkUsers = e => {
     // The clicked user.
     console.log(e.target.value);
     const userId = e.target.value;
-    for (var i = 0; i < this.state.buyerGroup.length; i++) {
-      if (this.state.buyerGroup[i]._id === userId) {
+    for (let i = 0; i < this.state.buyerGroup.length; i++) {
+      if (this.state.buyerGroup[i] === userId) {
         this.state.buyerGroup.splice(i, 1);
         return this.state.buyerGroup;
       }
@@ -87,9 +103,6 @@ class AddItemModal extends Component {
 
     // Add item via the addItem action
     this.props.addItem(newItem);
-
-    // Close modal
-    this.props.toggle();
   };
 
   render() {
@@ -106,7 +119,7 @@ class AddItemModal extends Component {
         isOpen={this.props.modal}
         contentLabel="Add Item Modal"
         ariaHideApp={false}
-        className="bg-white w-11/12 mt-24 m-auto md:mt-20 px-4 max-w-lg rounded shadow-lg z-50 overflow-y-auto focus:outline-none"
+        className="bg-white w-11/12 mt-16 m-auto md:mt-6 px-4 max-w-lg rounded shadow-lg z-50 overflow-y-auto focus:outline-none"
         style={{
           overlay: {
             position: "fixed",
@@ -122,11 +135,19 @@ class AddItemModal extends Component {
           <p className="text-xl ">Add Item</p>
           <button
             className="text-lg px-2 rounded bg-red-400 hover:bg-red-500"
-            onClick={this.props.toggle}
+            onClick={this.toggle}
           >
             x
           </button>
         </div>
+        {this.state.msg ? (
+          <div
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 my-1 rounded relative"
+            role="alert"
+          >
+            <strong className="font-bold">{this.state.msg.msg}</strong>
+          </div>
+        ) : null}
 
         <hr />
         <form className="mt-2 mb-8" onSubmit={this.onSubmit}>
@@ -161,7 +182,7 @@ class AddItemModal extends Component {
           </div>
           <div className="mb-5">
             <label className="block my-3">BuyerGroup:</label>
-            <div className="flex items-center justify-start">
+            <div className="flex flex-wrap items-center justify-start">
               {users.map(user => (
                 <span className="mr-8" key={user._id}>
                   <input
@@ -183,7 +204,6 @@ class AddItemModal extends Component {
               name="date"
               onChange={this.onChange}
               className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
-              placeholder={Date()}
             />
           </div>
           <button className="flex bg-blue-500 hover:bg-blue-600 mx-auto mt-8 px-5 py-1 rounded text-white focus:outline-none items-center">
@@ -196,7 +216,9 @@ class AddItemModal extends Component {
 }
 
 const mapStateToProps = state => ({
-  group: state.group
+  group: state.group,
+  error: state.error,
+  itemsLength: state.item.items.length
 });
 
-export default connect(mapStateToProps, { getGroup, addItem })(AddItemModal);
+export default connect(mapStateToProps, { addItem, clearErrors })(AddItemModal);

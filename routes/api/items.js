@@ -57,11 +57,10 @@ router.get("/user/:userId", auth, (req, res) => {
     );
 });
 
-// TODO make this private
 // @route   POST api/items
 // @desc    Create an item
 // @access  Private
-router.post("/", (req, res) => {
+router.post("/", auth, (req, res) => {
   const { buyer, location, price, buyerGroup, date } = req.body;
 
   if (!buyer || !location || !price || !buyerGroup) {
@@ -83,7 +82,9 @@ router.post("/", (req, res) => {
     .then(item => {
       const splitPrice = (newItem.price / newItem.buyerGroup.length).toFixed(2);
       updateTransaction(newItem.buyer, newItem.buyerGroup, splitPrice);
-      res.json(item);
+      Item.findById(item._id)
+        .populate("buyer buyerGroup", "-password")
+        .then(item => res.json(item));
     })
     .catch(err => res.status(400).json({ msg: "Cannot create item" }));
 });

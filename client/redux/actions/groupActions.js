@@ -45,10 +45,10 @@ export const registerGroup = name => dispatch => {
     });
 };
 
-export const getGroup = id => dispatch => {
+export const getGroup = name => dispatch => {
   dispatch(setGroupLoading());
   axios
-    .get(`${API_URL}/api/groups/${id}`)
+    .get(`${API_URL}/api/groups/${name}`)
     .then(res => {
       dispatch({
         type: GET_GROUP,

@@ -13,18 +13,18 @@ router.get("/", (req, res) => {
     .then(groups => res.json(groups));
 });
 
-// @route   GET api/group/:id
-// @desc    Gets group by id
+// @route   GET api/group/:name
+// @desc    Gets group by name
 // @acess   Public
-router.get("/:id", (req, res) => {
-  Group.findById(req.params.id)
+router.get("/:name", (req, res) => {
+  Group.findOne({ name: req.params.name })
     .populate("users transactions", "-password")
     .then(group => {
       res.json(group);
     })
     .catch(err =>
       res.status(400).json({
-        msg: `Couldn't get group with id ${req.params.id}`,
+        msg: `Couldn't get group with name ${req.params.name}`,
         err
       })
     );
