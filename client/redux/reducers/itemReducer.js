@@ -13,17 +13,36 @@ const initialState = {
   loading: false
 };
 
-const sortedItems = (state, action) => {
-  const ret = [...state.items];
+/*
+ * Sorts state.items based on the date.
+ */
+const sortedItems = (state, newItem) => {
+  const ret = state.items;
   for (let i = 0; i < ret.length; i++) {
-    if (ret[i].date <= action.payload.date) {
-      ret.splice(i, 0, action.payload);
+    if (ret[i].date <= newItem.date) {
+      ret.splice(i, 0, newItem);
       return ret;
     }
   }
   ret.push(action.payload);
-  console.log(ret);
   return ret;
+};
+
+// Updates state.items after PUT request. Assume that the item to update already exists in the state.
+const updatedItems = (state, update) => {
+  const ret = state.items;
+  for (let i = 0; i < ret.length; i++) {
+    if (ret[i]._id === update._id) {
+      if (ret[i].date === update.date) {
+        ret.splice(i, 1, update);
+        return ret;
+      } else {
+        ret.splice(i, 1);
+        return sortedItems(state, update);
+      }
+    }
+  }
+  console.log("Error: item not in state.");
 };
 
 export default function(state = initialState, action) {
@@ -39,9 +58,13 @@ export default function(state = initialState, action) {
     case "ADD_ITEM":
       return {
         ...state,
-        items: sortedItems(state, action)
+        items: sortedItems(state, action.payload)
       };
     case "UPDATE_ITEM":
+      return {
+        ...state,
+        items: updatedItems(state, action.payload)
+      };
     case "DELETE_ITEM":
       return {
         ...state,

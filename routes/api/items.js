@@ -63,10 +63,12 @@ router.get("/user/:userId", auth, (req, res) => {
 router.post("/", auth, (req, res) => {
   const { buyer, location, price, buyerGroup, date } = req.body;
 
-  if (!buyer || !location || !price || !buyerGroup) {
-    res.status(400).json({ msg: "Please fill out all fields" });
+  if (!location || !price || !buyerGroup) {
+    res.status(400).json({ msg: "Please fill out all fields." });
   } else if (buyerGroup.length < 1) {
-    res.status(400).json({ msg: "buyer group cannot be empty." });
+    res.status(400).json({ msg: "Buyer group cannot be empty." });
+  } else if (!buyer) {
+    res.status(400).json({ msg: "User not in group." });
   }
 
   newItem = new Item({
@@ -93,11 +95,16 @@ router.post("/", auth, (req, res) => {
 // @desc    update an item
 // @access  Public
 router.put("/:id", (req, res) => {
-  const { buyer, buyerGroup, price } = req.body;
+  const { buyer, buyerGroup, price, location } = req.body;
 
-  if (buyerGroup && buyerGroup.length < 1) {
-    res.status(400).json({ msg: "buyer group cannot be empty" });
+  if (!location || !price || !buyerGroup) {
+    res.status(400).json({ msg: "Please fill out all fields." });
+  } else if (buyerGroup.length < 1) {
+    res.status(400).json({ msg: "Buyer group cannot be empty." });
+  } else if (!buyer) {
+    res.status(400).json({ msg: "User not in group." });
   }
+
   Item.findByIdAndUpdate(req.params.id, req.body)
     .then(oldItem => {
       // NOTE this can be later optimized.
@@ -110,7 +117,10 @@ router.put("/:id", (req, res) => {
       splitPrice = (price / buyerGroup.length).toFixed(2);
       updateTransaction(buyer, buyerGroup, splitPrice);
 
-      res.json({ success: true });
+      // Returns the item with all fields populated.
+      Item.findById(oldItem._id)
+        .populate("buyer buyerGroup", "-password")
+        .then(item => res.json(item));
     })
     .catch(err =>
       res.status(400).json({ msg: "Item could not be updated", err })

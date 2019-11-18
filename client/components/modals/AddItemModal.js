@@ -21,6 +21,8 @@ class AddItemModal extends Component {
     addItem: PropTypes.func.isRequired,
     clearErrors: PropTypes.func.isRequired,
     group: PropTypes.object.isRequired,
+    error: PropTypes.object.isRequired,
+    itemsLength: PropTypes.number,
     modal: PropTypes.bool.isRequired,
     toggle: PropTypes.func.isRequired
   };
@@ -33,7 +35,6 @@ class AddItemModal extends Component {
       // check for login error
       if (error.id === "ITEM_FAIL") {
         this.setState({ msg: error.msg });
-        console.log(error.msg);
       } else {
         this.setState({ msg: null });
       }
@@ -45,7 +46,7 @@ class AddItemModal extends Component {
   // for normal form changes
   onChange = e => {
     if (e.target.name === "price") {
-      this.setState({ [e.target.name]: parseInt(e.target.value) });
+      this.setState({ [e.target.name]: parseFloat(e.target.value) });
     } else {
       this.setState({ [e.target.name]: e.target.value });
     }
@@ -75,7 +76,6 @@ class AddItemModal extends Component {
 
   checkUsers = e => {
     // The clicked user.
-    console.log(e.target.value);
     const userId = e.target.value;
     for (let i = 0; i < this.state.buyerGroup.length; i++) {
       if (this.state.buyerGroup[i] === userId) {
@@ -176,6 +176,7 @@ class AddItemModal extends Component {
             <input
               type="number"
               name="price"
+              step=".01"
               onChange={this.onChange}
               className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
             />

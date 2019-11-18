@@ -24,7 +24,8 @@ class Item extends Component {
     // buyer is the an object
     var buyer = this.props.item.buyer.name;
     buyer = buyer.charAt(0).toUpperCase() + buyer.slice(1);
-    const { location, price } = this.props.item;
+    const { location } = this.props.item;
+    const price = this.props.item.price.toFixed(2);
     const date = this.formatDate(this.props.date);
 
     return (
@@ -42,7 +43,7 @@ class Item extends Component {
           </div>
         </div>
         <div className="flex">
-          <p className="text-lg mr-2">${price}</p>
+          <p className="text-lg mr-2 font-montserrat">${price}</p>
           <button
             onClick={this.toggleItemModal}
             className="bg-blue-400 hover:bg-blue-500 p-2 rounded-full focus:outline-none "

@@ -56,3 +56,13 @@ export const deleteItem = id => (dispatch, getState) => {
       dispatch(getErrors(err.response.data, err.response.status, "ITEM_FAIL"))
     );
 };
+
+export const updateItem = update => (dispatch, getState) => {
+  axios
+    .put(`${API_URL}/api/items/${update._id}`, update)
+    .then(res => dispatch({ type: UPDATE_ITEM, payload: res.data }))
+    .catch(err => {
+      console.log(err);
+      dispatch(getErrors(err.response.data, err.response.status, "ITEM_FAIL"));
+    });
+};
