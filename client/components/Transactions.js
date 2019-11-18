@@ -1,15 +1,32 @@
 import React, { Component } from "react";
 
 import TransactionBox from "./TransactionBox";
+// import { getGroup } from "../redux/actions/groupActions";
+
+import { connect } from "react-redux";
 
 class Transaction extends Component {
-  state = {
-    user: "Allan",
-    transactions: [
-      { id: 1, source: "Yunzhi", destination: "Allan", money: -10.12 },
-      { id: 2, source: "Allan", destination: "Kevin", money: -10.34 },
-      { id: 3, source: "Dave", destination: "Allan", money: 20.12324 }
-    ]
+  getTransactions = transactions => {
+    if (!this.props.group.group.transactions) {
+      return [];
+    } else {
+      const filteredTransactions = this.props.group.group.transactions.filter(
+        transaction => {
+          return (
+            transaction.source._id === this.props.user._id ||
+            transaction.destination._id === this.props.user._id
+          );
+        }
+      );
+      const transactionBoxes = filteredTransactions.map(transaction => (
+        <TransactionBox
+          key={transaction._id}
+          transaction={transaction}
+          user={this.props.user.name}
+        />
+      ));
+      return transactionBoxes;
+    }
   };
 
   render() {
@@ -22,21 +39,29 @@ class Transaction extends Component {
           >
             Total Expenses:
           </h1>
-          <p className="font-montserrat text-5xl mb-8">$ 123.45</p>
+          <p className="font-montserrat text-5xl sm:text-6xl mb-8">
+            {`$ ${
+              !this.props.group.group.totalExpenses
+                ? (0).toFixed(2)
+                : parseFloat(this.props.group.group.totalExpenses).toFixed(2)
+            }`}
+          </p>
         </div>
 
-        <div id="TransactionBoxes" className="flex flex-wrap justify-center">
-          {this.state.transactions.map(transaction => (
-            <TransactionBox
-              key={transaction.id}
-              transaction={transaction}
-              user={this.state.user}
-            />
-          ))}
+        <div
+          id="TransactionBoxes"
+          className="flex flex-wrap justify-center mb-10"
+        >
+          {this.getTransactions()}
         </div>
       </div>
     );
   }
 }
 
-export default Transaction;
+const mapStateToProps = state => ({
+  group: state.group,
+  user: state.auth.user
+});
+
+export default connect(mapStateToProps, {})(Transaction);

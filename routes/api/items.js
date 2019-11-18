@@ -7,6 +7,7 @@ const auth = require("../../middleware/auth");
 // Models
 const Item = require("../../models/Item");
 const Transaction = require("../../models/Transaction");
+const Group = require("../../models/Group");
 
 // @route   GET api/items
 // @desc    Get All Items
@@ -82,6 +83,7 @@ router.post("/", auth, (req, res) => {
   newItem
     .save()
     .then(item => {
+      updateTotalExpenses(newItem.buyer, newItem.price);
       const splitPrice = (newItem.price / newItem.buyerGroup.length).toFixed(2);
       updateTransaction(newItem.buyer, newItem.buyerGroup, splitPrice);
       Item.findById(item._id)
@@ -108,6 +110,7 @@ router.put("/:id", (req, res) => {
   Item.findByIdAndUpdate(req.params.id, req.body)
     .then(oldItem => {
       // NOTE this can be later optimized.
+      updateTotalExpenses(oldItem.buyer, price - oldItem.price);
 
       // delete old item from transactions
       let splitPrice = (-oldItem.price / oldItem.buyerGroup.length).toFixed(2);
@@ -127,15 +130,18 @@ router.put("/:id", (req, res) => {
     );
 });
 
+// TODO only source can update/delete item.
 // @route   DELETE api/items/:id
 // @desc    delete an item by id
 // @access  Public
 router.delete("/:id", (req, res) => {
   Item.findById(req.params.id)
+    .populate("buyer buyerGroup", "-password")
     .then(item => {
+      updateTotalExpenses(item.buyer, -item.price);
       const splitPrice = (-item.price / item.buyerGroup.length).toFixed(2);
       updateTransaction(item.buyer, item.buyerGroup, splitPrice);
-      item.remove().then(delItem => res.json({ success: true, delItem }));
+      item.remove().then(delItem => res.json(delItem));
     })
     .catch(err =>
       res.status(400).json({ msg: "Item could not be deleted", err })
@@ -170,6 +176,12 @@ function updateTransaction(buyerId, buyerGroup, splitPrice) {
         .catch(err => res.status(400).json("Couldn't update transaction."));
     });
   });
+}
+
+function updateTotalExpenses(buyerId, price) {
+  Group.findOne({ users: { $elemMatch: { $in: buyerId } } })
+    .then(group => group.updateOne({ $inc: { totalExpenses: price } }))
+    .catch(err => console.log(err));
 }
 
 module.exports = router;

@@ -35,7 +35,7 @@ class Home extends Component {
             +
           </button>
           <AddItemModal modal={this.state.showItemModal} toggle={this.toggle} />
-          <footer className="text-left mb-5 ml-5 text-md">
+          <footer className="bottom-0 text-left mb-5 ml-5 text-md">
             <p>
               Made with <span style={{ color: "#e25555" }}>&#9829;</span>
             </p>

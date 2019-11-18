@@ -178,7 +178,7 @@ class AddItemModal extends Component {
               name="price"
               step=".01"
               onChange={this.onChange}
-              className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
+              className="font-montserrat shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
             />
           </div>
           <div className="mb-5">

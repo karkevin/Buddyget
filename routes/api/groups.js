@@ -18,7 +18,14 @@ router.get("/", (req, res) => {
 // @acess   Public
 router.get("/:name", (req, res) => {
   Group.findOne({ name: req.params.name })
-    .populate("users transactions", "-password")
+    .populate({
+      path: "transactions",
+      populate: {
+        path: "source destination",
+        select: "name"
+      }
+    })
+    .populate("users", "-password")
     .then(group => {
       res.json(group);
     })

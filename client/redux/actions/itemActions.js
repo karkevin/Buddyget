@@ -2,6 +2,7 @@ import axios from "axios";
 import { API_URL } from "../../config/keys";
 import { tokenConfig } from "./authActions";
 import { getErrors } from "./errorActions";
+import { getGroup } from "./groupActions";
 
 import {
   GET_ITEMS,
@@ -36,12 +37,14 @@ export const getItems = () => dispatch => {
 export const addItem = item => (dispatch, getState) => {
   axios
     .post(`${API_URL}/api/items`, item, tokenConfig(getState))
-    .then(res =>
+    .then(res => {
       dispatch({
         type: ADD_ITEM,
         payload: res.data
-      })
-    )
+      });
+
+      dispatch(getGroup(res.data.buyer.group));
+    })
     .catch(err => {
       dispatch(getErrors(err.response.data, err.response.status, "ITEM_FAIL"));
       console.log(err);
@@ -51,7 +54,10 @@ export const addItem = item => (dispatch, getState) => {
 export const deleteItem = id => (dispatch, getState) => {
   axios
     .delete(`${API_URL}/api/items/${id}`)
-    .then(res => dispatch({ type: DELETE_ITEM, payload: id }))
+    .then(res => {
+      dispatch({ type: DELETE_ITEM, payload: id });
+      dispatch(getGroup(res.data.buyer.group));
+    })
     .catch(err =>
       dispatch(getErrors(err.response.data, err.response.status, "ITEM_FAIL"))
     );
@@ -60,7 +66,10 @@ export const deleteItem = id => (dispatch, getState) => {
 export const updateItem = update => (dispatch, getState) => {
   axios
     .put(`${API_URL}/api/items/${update._id}`, update)
-    .then(res => dispatch({ type: UPDATE_ITEM, payload: res.data }))
+    .then(res => {
+      dispatch({ type: UPDATE_ITEM, payload: res.data });
+      dispatch(getGroup(res.data.buyer.group));
+    })
     .catch(err => {
       console.log(err);
       dispatch(getErrors(err.response.data, err.response.status, "ITEM_FAIL"));
