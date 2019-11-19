@@ -3,6 +3,7 @@ import thunk from "redux-thunk";
 import rootReducer from "./reducers";
 import { composeWithDevTools } from "redux-devtools-extension";
 
+// NOTE to run with devtools, use the composeWithDevTools Option.
 typeof window !== "undefined";
 
 const initialState = {};
@@ -13,7 +14,7 @@ const middleware = [thunk];
 const store = createStore(
   rootReducer,
   initialState,
-  composeWithDevTools(applyMiddleware(...middleware))
+  compose(applyMiddleware(...middleware))
 );
 
 export default store;
