@@ -7,12 +7,19 @@ import { addItem } from "../../redux/actions/itemActions";
 import { clearErrors } from "../../redux/actions/errorActions";
 import PropTypes from "prop-types";
 
+const getCurrentDate = () => {
+  let date = new Date();
+  return (
+    date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+  );
+};
+
 const initialState = {
   buyer: "",
   location: "",
   buyerGroup: [],
   price: 0,
-  date: new Date(),
+  date: getCurrentDate(),
   msg: null
 };
 
@@ -204,6 +211,7 @@ class AddItemModal extends Component {
               type="date"
               name="date"
               onChange={this.onChange}
+              defaultValue={this.state.date}
               className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
             />
           </div>

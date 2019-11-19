@@ -22,10 +22,11 @@ class Home extends Component {
         <div>
           <Nav />
           <Transactions />
-          <ItemList />
 
+          <ItemList />
+          <div className="mb-20"></div>
           <button
-            className=" fixed bottom-0 left-1/2 flex justify-center block h-12 w-12 z-1 rounded-full text-4xl mx-auto mb-8 focus:outline-none hover:bg-gray-500"
+            className=" fixed bottom-0 left-1/2 flex justify-center block h-12 w-12 z-1 rounded-full text-4xl mx-auto mb-8 focus:outline-none"
             style={{
               backgroundColor: "#788CFF",
               transform: "translate(-50%, 0)"
@@ -36,10 +37,7 @@ class Home extends Component {
           </button>
           <AddItemModal modal={this.state.showItemModal} toggle={this.toggle} />
           <footer className="bottom-0 text-left mb-5 ml-5 text-md">
-            <p>
-              Made with <span style={{ color: "#e25555" }}>&#9829;</span>
-            </p>
-            <p className="mb-2">by Kevin Xu</p>
+            <p className="w-20 mb-2 sm:w-full">Made by Kevin Xu</p>
             <a
               href="https://github.com/karkevin"
               className="text-lg hover:font-bold"

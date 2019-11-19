@@ -42,11 +42,11 @@ export const addItem = item => (dispatch, getState) => {
         type: ADD_ITEM,
         payload: res.data
       });
-
       dispatch(getGroup(res.data.buyer.group));
     })
     .catch(err => {
       dispatch(getErrors(err.response.data, err.response.status, "ITEM_FAIL"));
+      // dispatch(getErrors(err.response.data, err.response.status, "ITEM_FAIL"));
       console.log(err);
     });
 };

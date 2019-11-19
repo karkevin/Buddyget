@@ -67,7 +67,10 @@ class ItemModal extends Component {
   // for normal form changes
   onChange = e => {
     if (e.target.name === "price") {
-      this.setState({ [e.target.name]: parseFloat(e.target.value) });
+      console.log(e.target.value);
+      this.setState({
+        [e.target.name]: !e.target.value ? null : parseFloat(e.target.value)
+      });
     } else {
       this.setState({ [e.target.name]: e.target.value });
     }

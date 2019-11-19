@@ -13,7 +13,7 @@ router.post("/", (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    res.status(400).json({ msg: "Please fill out all fields" });
+    return res.status(400).json({ msg: "Please fill out all fields" });
   }
 
   // check for user

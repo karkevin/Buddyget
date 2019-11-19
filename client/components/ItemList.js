@@ -6,6 +6,16 @@ import PropTypes from "prop-types";
 
 import Item from "./Item";
 
+// Scroll to Transactions
+import {
+  Link,
+  Element,
+  Events,
+  animateScroll as scroll,
+  scrollSpy,
+  scroller
+} from "react-scroll";
+
 class ItemList extends Component {
   static propTypes = {
     getItems: PropTypes.func.isRequired,
@@ -22,21 +32,22 @@ class ItemList extends Component {
     const { items } = this.props.item;
     return (
       <div className="w-full text-center mb-10">
-        <button className="text-center bg-gray-400 py-1 px-3 mb-12 rounded-lg focus:outline-none hover:bg-gray-500">
-          Transactions
-          <svg
-            className="w-3 h-auto m-auto"
-            version="1.0"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 700.000000 700.000000"
-          >
-            <g
-              transform="translate(0.000000,700.000000) scale(0.100000,-0.100000)"
-              fill="#000000"
-              stroke="none"
+        <Link to="ItemList" smooth={true} duration={1050} offset={-80}>
+          <button className="text-center bg-gray-400 py-1 px-3 mb-12 rounded-lg focus:outline-none hover:bg-gray-500">
+            Transactions
+            <svg
+              className="w-3 h-auto m-auto"
+              version="1.0"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 700.000000 700.000000"
             >
-              <path
-                d="M289 5323 c-45 -7 -132 -66 -162 -109 -42 -60 -59 -140 -43 -208 7
+              <g
+                transform="translate(0.000000,700.000000) scale(0.100000,-0.100000)"
+                fill="#000000"
+                stroke="none"
+              >
+                <path
+                  d="M289 5323 c-45 -7 -132 -66 -162 -109 -42 -60 -59 -140 -43 -208 7
                   -29 22 -69 34 -87 11 -19 108 -119 214 -224 668 -657 1795 -1767 2428 -2391
                   512 -505 578 -567 628 -591 62 -29 144 -30 218 -2 52 20 92 57 483 443 234
                   231 552 545 706 696 153 151 446 440 650 641 203 201 507 500 675 665 168 165
@@ -49,11 +60,12 @@ class ItemList extends Component {
                   71 -180 173 -235 225 -55 53 -206 197 -335 321 -447 428 -737 705 -1065 1019
                   -182 173 -386 369 -455 436 -260 251 -326 313 -364 343 -61 48 -140 67 -227
                   54z"
-              ></path>
-            </g>
-          </svg>
-        </button>
-        <div id="ItemList" className="w-3/4 m-auto max-w-2xl">
+                ></path>
+              </g>
+            </svg>
+          </button>
+        </Link>
+        <div name="ItemList" className="w-3/4 m-auto max-w-2xl">
           {items.map(item => (
             <Item key={item._id} item={item} />
           ))}

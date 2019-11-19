@@ -24,7 +24,7 @@ const sortedItems = (state, newItem) => {
       return ret;
     }
   }
-  ret.push(action.payload);
+  ret.push(newItem);
   return ret;
 };
 

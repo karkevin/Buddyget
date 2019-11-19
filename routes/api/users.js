@@ -14,7 +14,7 @@ router.post("/", (req, res) => {
   const { name, email, password, group, username } = req.body;
 
   if (!name || !email || !password || !group || !username) {
-    res.status(400).json({ msg: "Please fill out all fields" });
+    return res.status(400).json({ msg: "Please fill out all fields" });
   }
 
   // check for user

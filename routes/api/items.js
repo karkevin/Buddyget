@@ -65,11 +65,14 @@ router.post("/", auth, (req, res) => {
   const { buyer, location, price, buyerGroup, date } = req.body;
 
   if (!location || !price || !buyerGroup) {
-    res.status(400).json({ msg: "Please fill out all fields." });
+    return res.status(400).json({ msg: "Please fill out all fields." });
   } else if (buyerGroup.length < 1) {
-    res.status(400).json({ msg: "Buyer group cannot be empty." });
+    return res.status(400).json({ msg: "Buyer group cannot be empty." });
   } else if (!buyer) {
-    res.status(400).json({ msg: "User not in group." });
+    return res.status(400).json({ msg: "User not in group." });
+  }
+  if (price <= 0) {
+    return res.status(400).json({ msg: "Price msut be positive." });
   }
 
   newItem = new Item({
@@ -99,12 +102,15 @@ router.post("/", auth, (req, res) => {
 router.put("/:id", (req, res) => {
   const { buyer, buyerGroup, price, location } = req.body;
 
+  if (price <= 0) {
+    return res.status(400).json({ msg: "Price msut be positive." });
+  }
   if (!location || !price || !buyerGroup) {
-    res.status(400).json({ msg: "Please fill out all fields." });
+    return res.status(400).json({ msg: "Please fill out all fields." });
   } else if (buyerGroup.length < 1) {
-    res.status(400).json({ msg: "Buyer group cannot be empty." });
+    return res.status(400).json({ msg: "Buyer group cannot be empty." });
   } else if (!buyer) {
-    res.status(400).json({ msg: "User not in group." });
+    return res.status(400).json({ msg: "User not in group." });
   }
 
   Item.findByIdAndUpdate(req.params.id, req.body)
@@ -140,7 +146,10 @@ router.delete("/:id", (req, res) => {
     .then(item => {
       updateTotalExpenses(item.buyer, -item.price);
       const splitPrice = (-item.price / item.buyerGroup.length).toFixed(2);
-      updateTransaction(item.buyer, item.buyerGroup, splitPrice);
+
+      // Since the item is populated, need to access its fields to pass in the correct arguments for updateTransaction
+      const itemBuyerGroup = item.buyerGroup.map(user => user._id);
+      updateTransaction(item.buyer._id, itemBuyerGroup, splitPrice);
       item.remove().then(delItem => res.json(delItem));
     })
     .catch(err =>
@@ -152,6 +161,7 @@ router.delete("/:id", (req, res) => {
  * Takes in the buyerID, the buyer group, and the split price between the members of the group.
  */
 function updateTransaction(buyerId, buyerGroup, splitPrice) {
+  // buyerGroup is a list of
   Transaction.find({
     $or: [
       {
