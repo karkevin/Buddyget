@@ -7,11 +7,9 @@ export default () => (
     <Head>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta charSet="utf-8" />
-      <link
-        href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
-        rel="stylesheet"
-        type="text/css"
-      ></link>
+      <title>BuddyGet</title>
+      <link rel="shortcut icon" type="image/png" href="/favicon.png" />
+      <link rel="shortcut icon" type="image/png" href="/favicon.png" />
     </Head>
   </>
 );

@@ -20,18 +20,18 @@ class Register extends Component {
   render() {
     return (
       <Layout>
-        <div id="modal" className="text-center mt-64 m-auto">
-          <p className="text-xl mb-2">Welcome to</p>
-          <p className="text-4xl mb-16">BuddyGet</p>
+        <div id="modal" className="text-center mt-48 m-auto">
+          <p className="text-4xl mb-2">Welcome to</p>
+          <img src="/logo.png" alt="BuddyGet" className="w-64 mx-auto mb-8" />
           <div className="flex flex-wrap items-center justify-center">
             <button
-              className="p-1 rounded bg-purple-400 text-white focus:outline-none hover:bg-purple-500"
+              className="p-1 rounded bg-purple-500 text-white px-3 focus:outline-none hover:bg-purple-600"
               onClick={this.toggleRegisterModal}
             >
               Register
             </button>
             <button
-              className="ml-6 p-1 rounded bg-purple-400 text-white focus:outline-none hover:bg-purple-500"
+              className="ml-6 p-1 rounded bg-purple-500 text-white px-3 focus:outline-none hover:bg-purple-600"
               onClick={this.toggleLoginModal}
             >
               Login

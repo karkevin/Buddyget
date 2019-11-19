@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
+const path = require("path");
 
 const app = express();
 
@@ -18,25 +18,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-// var allowedOrigins = ["http://localhost:3000"];
-// app.use(
-//   cors({
-//     origin: function(origin, callback) {
-//       // allow requests with no origin
-//       // (like mobile apps or curl requests)
-//       if (!origin) return callback(null, true);
-//       if (allowedOrigins.indexOf(origin) === -1) {
-//         var msg =
-//           "The CORS policy for this site does not " +
-//           "allow access from the specified Origin.";
-//         return callback(new Error(msg), false);
-//       }
-//       return callback(null, true);
-//     }
-//   })
-// );
-
-// When user hits the endpoint `/api/items` should refer to the code in items.
+// When user hits the endpoint should refer to the code to that endpoint.
 app.use("/api/items", require("./routes/api/items"));
 app.use("/api/users", require("./routes/api/users"));
 app.use("/api/auth", require("./routes/api/auth"));
@@ -55,7 +37,16 @@ mongoose
   .then(() => console.log("MongoDB connected.."))
   .catch(err => console.log(err));
 
-app.use(express.static("client/build"));
+// Serve static assests (build folder) if we're in production
+if (process.env.NODE_ENV === "production") {
+  // Set static folder
+  app.use(express.static("client/build"));
+
+  // get anything else besides the specified endpoints
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server running on port ${port}`));
