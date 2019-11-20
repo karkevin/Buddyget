@@ -11,10 +11,11 @@ const initialState = {};
 // an array of middlewares.
 const middleware = [thunk];
 
-const store = createStore(
-  rootReducer,
-  initialState,
-  composeWithDevTools(applyMiddleware(...middleware))
-);
+const makeStore = (initialState = {}) =>
+  createStore(
+    rootReducer,
+    initialState,
+    composeWithDevTools(applyMiddleware(...middleware))
+  );
 
-export default store;
+export default makeStore;
