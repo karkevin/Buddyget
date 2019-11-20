@@ -7,17 +7,6 @@ const app = express();
 // used to parse incoming requests with JSON payload.
 app.use(express.json());
 
-// enable cors
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, x-auth-token"
-  );
-  res.header("Access-Control-Allow-Methods", "DELETE, PUT");
-  next();
-});
-
 // When user hits the endpoint should refer to the code to that endpoint.
 app.use("/api/items", require("./routes/api/items"));
 app.use("/api/users", require("./routes/api/users"));
@@ -43,9 +32,9 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 
   // get anything else besides the specified endpoints
-  // app.get("*", (req, res) => {
-  //   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-  // });
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
 }
 
 const port = process.env.PORT || 5000;
