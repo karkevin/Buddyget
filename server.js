@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === "production") {
   // Set static folder
   app.use(express.static("client/build"));
 
-  // get anything else besides the specified endpoints
+  // get anything else besides /api/items
   app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
