@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 // pages
 import Home from "./home";
@@ -15,7 +15,9 @@ class App extends Component {
   }
 
   render() {
-    return <div>{this.props.authenticated ? <Home /> : <Register />}</div>;
+    return (
+      <Fragment>{this.props.authenticated ? <Home /> : <Register />}</Fragment>
+    );
   }
 }
 

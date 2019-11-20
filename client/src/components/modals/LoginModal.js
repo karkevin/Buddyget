@@ -64,7 +64,7 @@ class LoginModal extends Component {
         contentLabel="Login Modal"
         toggleModal={this.localToggle}
         ariaHideApp={false}
-        className="bg-white w-11/12 mt-48 m-auto max-w-lg px-4 rounded shadow-lg z-50 overflow-y-auto focus:outline-none"
+        className="bg-white w-11/12 mt-10 sm:mt-48 m-auto max-w-lg px-4 rounded shadow-lg z-50 overflow-y-auto focus:outline-none"
         style={{
           overlay: {
             position: "fixed",

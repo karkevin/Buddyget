@@ -126,7 +126,7 @@ class AddItemModal extends Component {
         isOpen={this.props.modal}
         contentLabel="Add Item Modal"
         ariaHideApp={false}
-        className="bg-white w-11/12 mt-16 m-auto md:mt-6 px-4 max-w-lg rounded shadow-lg z-50 overflow-y-auto focus:outline-none"
+        className="bg-white w-11/12 mt-5 sm:mt-16 m-auto md:mt-6 px-4 max-w-lg rounded shadow-lg z-50 overflow-y-auto focus:outline-none"
         style={{
           overlay: {
             position: "fixed",
