@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from "react";
 
 // pages
-import Home from "./home";
-import Register from "./register";
+import Home from "./Home";
+import Login from "./Login";
 
 // load user dispatch function
 import { loadUser } from "../redux/actions/authActions";
@@ -16,7 +16,7 @@ class App extends Component {
 
   render() {
     return (
-      <Fragment>{this.props.authenticated ? <Home /> : <Register />}</Fragment>
+      <Fragment>{this.props.authenticated ? <Home /> : <Login />}</Fragment>
     );
   }
 }

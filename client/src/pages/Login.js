@@ -23,7 +23,7 @@ class Register extends Component {
     return (
       <Layout>
         <div className="h-screen flex items-center justify-center">
-          <div id="modal" className="text-center m-auto">
+          <div id="modal" className="text-center mx-auto">
             <p className="text-4xl mb-2">Welcome to</p>
             <img src={logo} alt="BuddyGet" className="w-64 mx-auto mb-8" />
             <div className="flex flex-wrap items-center justify-center">

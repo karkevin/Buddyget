@@ -30,7 +30,6 @@ export const loadUser = () => (dispatch, getState) => {
       });
     })
     .catch(err => {
-      console.log(err);
       dispatch(getErrors(err.response.data, err.response.status));
       dispatch({
         type: AUTH_ERROR
@@ -87,11 +86,11 @@ export const loginUser = ({ email, password }) => dispatch => {
   axios
     .post(`/api/auth`, body, config)
     .then(res => {
-      dispatch(getGroup(res.data.user.group));
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data
       });
+      dispatch(getGroup(res.data.user.group));
     })
     .catch(err => {
       console.log(err);

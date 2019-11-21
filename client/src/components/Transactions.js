@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 
 import TransactionBox from "./TransactionBox";
-// import { getGroup } from "../redux/actions/groupActions";
+import { getGroup } from "../redux/actions/groupActions";
 
 import { connect } from "react-redux";
 
 class Transaction extends Component {
-  getTransactions = transactions => {
+  getTransactions = () => {
     if (!this.props.group.group.transactions) {
       return [];
     } else {

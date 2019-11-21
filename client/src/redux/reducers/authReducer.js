@@ -9,8 +9,6 @@
 //   REGISTER_SUCCESS
 // } from "../actions/types";
 
-import { loadToken } from "../../config/localStorage";
-
 const initialState = {
   token: localStorage.getItem("token"),
   authenticated: null,

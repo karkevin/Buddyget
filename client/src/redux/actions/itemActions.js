@@ -19,11 +19,11 @@ export const setItemsLoading = () => {
   };
 };
 
-export const getItems = () => dispatch => {
+export const getItems = () => (dispatch, getState) => {
   // able to call any actions
   dispatch(setItemsLoading());
   axios
-    .get(`/api/items`)
+    .get(`/api/items`, tokenConfig(getState))
     .then(res =>
       dispatch({
         type: GET_ITEMS,
@@ -52,7 +52,7 @@ export const addItem = item => (dispatch, getState) => {
 
 export const deleteItem = id => (dispatch, getState) => {
   axios
-    .delete(`/api/items/${id}`)
+    .delete(`/api/items/${id}`, tokenConfig(getState))
     .then(res => {
       dispatch({ type: DELETE_ITEM, payload: id });
       dispatch(getGroup(res.data.buyer.group));
@@ -64,7 +64,7 @@ export const deleteItem = id => (dispatch, getState) => {
 
 export const updateItem = update => (dispatch, getState) => {
   axios
-    .put(`/api/items/${update._id}`, update)
+    .put(`/api/items/${update._id}`, update, tokenConfig(getState))
     .then(res => {
       dispatch({ type: UPDATE_ITEM, payload: res.data });
       dispatch(getGroup(res.data.buyer.group));

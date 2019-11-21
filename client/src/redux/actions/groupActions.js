@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getErrors } from "./errorActions";
+import { tokenConfig } from "./authActions";
 
 import {
   GET_GROUP,
@@ -37,17 +38,17 @@ export const registerGroup = name => dispatch => {
     })
     .catch(err => {
       // TODO change so you need permission to get Group.
-      // dispatch(getErrors(err.response.data, err.response.status));
-      // dispatch({
-      //   type: REGISTER_GROUP_FAIL
-      // });
+      dispatch(getErrors(err.response.data, err.response.status));
+      dispatch({
+        type: REGISTER_GROUP_FAIL
+      });
     });
 };
 
-export const getGroup = name => dispatch => {
+export const getGroup = name => (dispatch, getState) => {
   dispatch(setGroupLoading());
   axios
-    .get(`/api/groups/${name}`)
+    .get(`/api/groups/${name}`, tokenConfig(getState))
     .then(res => {
       dispatch({
         type: GET_GROUP,
