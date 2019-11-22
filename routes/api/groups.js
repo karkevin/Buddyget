@@ -1,12 +1,15 @@
 const express = require("express");
 const router = express.Router();
 
+// auth middleware
+const auth = require("../../middleware/auth");
+
 const Group = require("../../models/Group");
 
 // @route   GET api/group
-// @desc    Gets a group
-// @access  Public
-router.get("/", (req, res) => {
+// @desc    Gets all groups
+// @access  Private
+router.get("/", auth, (req, res) => {
   Group.find()
     .sort({ date: -1 })
     .populate("users transactions", "-password")
@@ -15,8 +18,8 @@ router.get("/", (req, res) => {
 
 // @route   GET api/group/:name
 // @desc    Gets group by name
-// @acess   Public
-router.get("/:name", (req, res) => {
+// @acess   Private
+router.get("/:name", auth, (req, res) => {
   Group.findOne({ name: req.params.name })
     .populate({
       path: "transactions",

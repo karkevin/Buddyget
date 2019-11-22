@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getErrors } from "./errorActions";
 import { tokenConfig } from "./authActions";
+import { getGroupItems } from "./itemActions";
 
 import {
   GET_GROUP,
@@ -35,6 +36,7 @@ export const registerGroup = name => dispatch => {
         type: REGISTER_GROUP_SUCCESS,
         payload: res.data
       });
+      dispatch(getGroupItems(res.data._id));
     })
     .catch(err => {
       // TODO change so you need permission to get Group.
@@ -54,6 +56,7 @@ export const getGroup = name => (dispatch, getState) => {
         type: GET_GROUP,
         payload: res.data
       });
+      dispatch(getGroupItems(res.data._id));
     })
     .catch(err => dispatch(getErrors(err.response.data, err.response.status)));
 };

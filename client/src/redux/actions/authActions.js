@@ -40,19 +40,16 @@ export const loadUser = () => (dispatch, getState) => {
 /* Registers a user and the group they are a part of.
  *
  */
-export const registerUser = ({
-  name,
-  email,
-  username,
-  password,
-  group
-}) => dispatch => {
+export const registerUser = ({ name, email, password, group }) => dispatch => {
   const config = {
     headers: {
       "Content-type": "application/json"
     }
   };
-  const body = JSON.stringify({ name, email, username, password, group });
+
+  // send lower case name to database.
+  const lowerCaseName = name.toLowerCase();
+  const body = JSON.stringify({ name: lowerCaseName, email, password, group });
 
   // TODO change dispatch to disallow users to be added to a group they don't belong to.
   dispatch(registerGroup(group));
@@ -64,6 +61,7 @@ export const registerUser = ({
         type: REGISTER_SUCCESS,
         payload: res.data
       });
+      dispatch(getGroup(res.data.user.group));
     })
     .catch(err => {
       dispatch(

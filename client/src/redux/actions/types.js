@@ -1,5 +1,6 @@
 // item action types
 export const GET_ITEMS = "GET_ITEMS";
+export const GET_GROUP_ITEMS = "GET_GROUP_ITEMS";
 export const GET_USER_ITEMS = "GET_USER_ITEMS";
 export const GET_ITEM_ID = "GET_ITEM_ID";
 export const ADD_ITEM = "ADD_ITEM";

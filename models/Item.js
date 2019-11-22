@@ -18,6 +18,11 @@ const itemSchema = new Schema({
   buyerGroup: {
     type: [{ type: Schema.Types.ObjectId, ref: "user" }]
   },
+  groupId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "group",
+    required: true
+  },
   date: {
     type: Date,
     default: Date.now()

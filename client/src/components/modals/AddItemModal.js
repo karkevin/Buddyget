@@ -64,7 +64,8 @@ class AddItemModal extends Component {
     const name = e.target.value.toLowerCase();
 
     const user = this.props.group.group.users.find(user => user.name === name);
-
+    console.log(this.props.group.group.users);
+    console.log(user);
     user
       ? this.setState({ [e.target.name]: user._id })
       : this.setState({ [e.target.name]: "" });
@@ -99,13 +100,14 @@ class AddItemModal extends Component {
     e.preventDefault();
 
     const { buyer, price, location, buyerGroup, date } = this.state;
-
+    const groupId = this.props.group.group._id;
     const newItem = {
       buyer,
       price,
       location,
       buyerGroup,
-      date
+      date,
+      groupId
     };
 
     // Add item via the addItem action
@@ -200,7 +202,7 @@ class AddItemModal extends Component {
                     className="mr-1"
                     onChange={this.onClick}
                   />
-                  {user.name}
+                  {user.name.charAt(0).toUpperCase() + user.name.slice(1)}
                 </span>
               ))}
             </div>

@@ -11,8 +11,8 @@ const Group = require("../../models/Group");
 
 // @route   GET api/items
 // @desc    Get All Items
-// @access  Public
-router.get("/", (req, res) => {
+// @access  Private
+router.get("/", auth, (req, res) => {
   Item.find()
     .sort({ date: -1 })
     .populate("buyer buyerGroup", "-password")
@@ -22,8 +22,8 @@ router.get("/", (req, res) => {
 
 // @route   GET api/items/:id
 // @desc    Get item by id
-// @acess   Public
-router.get("/:id", (req, res) => {
+// @acess   Private
+router.get("/:id", auth, (req, res) => {
   Item.findById(req.params.id)
     .sort({ date: -1 })
     .populate("buyer buyerGroup", "-password")
@@ -35,6 +35,26 @@ router.get("/:id", (req, res) => {
         msg: `Couldn't get user's items with id ${req.params.id}`,
         err
       })
+    );
+});
+
+// @route   GET api/items/group/:groupId
+// @desc    Get item by group id
+// @acess   Private
+
+router.get("/group/:groupId", auth, (req, res) => {
+  const { groupId } = req.params;
+
+  Item.find({ groupId })
+    .sort({ date: -1 })
+    .populate("buyer buyerGroup", "-password")
+    .then(items => {
+      res.json(items);
+    })
+    .catch(err =>
+      res
+        .status(400)
+        .json({ msg: `Couldn't get item with group ${req.params.user}`, err })
     );
 });
 
@@ -62,14 +82,15 @@ router.get("/user/:userId", auth, (req, res) => {
 // @desc    Create an item
 // @access  Private
 router.post("/", auth, (req, res) => {
-  const { buyer, location, price, buyerGroup, date } = req.body;
-
+  const { buyer, location, price, buyerGroup, date, groupId } = req.body;
   if (!location || !price || !buyerGroup) {
     return res.status(400).json({ msg: "Please fill out all fields." });
   } else if (buyerGroup.length < 1) {
     return res.status(400).json({ msg: "Buyer group cannot be empty." });
   } else if (!buyer) {
     return res.status(400).json({ msg: "User not in group." });
+  } else if (!groupId) {
+    return res.status(400).json({ msg: "Could not assign group id." });
   }
   if (price <= 0) {
     return res.status(400).json({ msg: "Price msut be positive." });
@@ -80,6 +101,7 @@ router.post("/", auth, (req, res) => {
     location,
     price,
     buyerGroup,
+    groupId,
     date: date ? date : Date.now()
   });
 
@@ -98,8 +120,8 @@ router.post("/", auth, (req, res) => {
 
 // @route   PUT api/items/:id
 // @desc    update an item
-// @access  Public
-router.put("/:id", (req, res) => {
+// @access  Private
+router.put("/:id", auth, (req, res) => {
   const { buyer, buyerGroup, price, location } = req.body;
 
   if (price <= 0) {
@@ -136,11 +158,10 @@ router.put("/:id", (req, res) => {
     );
 });
 
-// TODO only source can update/delete item.
 // @route   DELETE api/items/:id
 // @desc    delete an item by id
-// @access  Public
-router.delete("/:id", (req, res) => {
+// @access  Private
+router.delete("/:id", auth, (req, res) => {
   Item.findById(req.params.id)
     .populate("buyer buyerGroup", "-password")
     .then(item => {

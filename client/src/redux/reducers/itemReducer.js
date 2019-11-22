@@ -1,5 +1,6 @@
 // import {
 //   GET_ITEMS,
+//   GET_GROUP_ITEMS,
 //   GET_USER_ITEMS,
 //   GET_ITEM_ID,
 //   ADD_ITEM,
@@ -48,6 +49,7 @@ const updatedItems = (state, update) => {
 export default function(state = initialState, action) {
   switch (action.type) {
     case "GET_ITEMS":
+    case "GET_GROUP_ITEMS":
       return {
         ...state,
         items: action.payload,

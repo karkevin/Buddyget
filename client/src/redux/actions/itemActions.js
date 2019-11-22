@@ -5,6 +5,7 @@ import { getGroup } from "./groupActions";
 
 import {
   GET_ITEMS,
+  GET_GROUP_ITEMS,
   GET_USER_ITEMS,
   GET_ITEM_ID,
   ADD_ITEM,
@@ -19,14 +20,14 @@ export const setItemsLoading = () => {
   };
 };
 
-export const getItems = () => (dispatch, getState) => {
+export const getGroupItems = groupId => (dispatch, getState) => {
   // able to call any actions
   dispatch(setItemsLoading());
   axios
-    .get(`/api/items`, tokenConfig(getState))
+    .get(`/api/items/group/${groupId}`, tokenConfig(getState))
     .then(res =>
       dispatch({
-        type: GET_ITEMS,
+        type: GET_GROUP_ITEMS,
         payload: res.data
       })
     )

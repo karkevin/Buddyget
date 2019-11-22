@@ -224,7 +224,7 @@ class ItemModal extends Component {
                     className="mr-1"
                     onChange={this.onClick}
                   />
-                  {user.name}
+                  {user.name.charAt(0).toUpperCase() + user.name.slice(1)}
                 </span>
               ))}
             </div>

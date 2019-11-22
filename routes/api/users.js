@@ -11,14 +11,14 @@ const Transaction = require("../../models/Transaction");
 // @desc    Register new user
 // @access  Public
 router.post("/", (req, res) => {
-  const { name, email, password, group, username } = req.body;
+  const { name, email, password, group } = req.body;
 
-  if (!name || !email || !password || !group || !username) {
+  if (!name || !email || !password || !group) {
     return res.status(400).json({ msg: "Please fill out all fields" });
   }
 
   // check for user
-  User.findOne({ email })
+  User.findOne({ email, group })
     .then(user => {
       if (user) return res.status(400).json({ msg: "User already exists" });
 
@@ -26,10 +26,8 @@ router.post("/", (req, res) => {
         name,
         email,
         password,
-        username,
         group
       });
-
       // create salt for hashing of password
       bcrypt.genSalt(10, (err, salt) => {
         if (err) throw err;
@@ -54,8 +52,7 @@ router.post("/", (req, res) => {
                       id: user.id,
                       name: user.name,
                       email: user.email,
-                      group: user.group,
-                      username: user.username
+                      group: user.group
                     }
                   });
                 }

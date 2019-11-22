@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // Allows a state to be connected to this component.
 import { connect } from "react-redux";
-import { getItems } from "../redux/actions/itemActions";
+import { getGroupItems } from "../redux/actions/itemActions";
 import PropTypes from "prop-types";
 
 import Item from "./Item";
@@ -11,14 +11,14 @@ import { Link } from "react-scroll";
 
 class ItemList extends Component {
   static propTypes = {
-    getItems: PropTypes.func.isRequired,
+    getGroupItems: PropTypes.func.isRequired,
     item: PropTypes.object.isRequired
   };
 
   // ? after making an API request, mount the component.
   componentDidMount() {
     // calls the method to dispatch action to reducer.
-    this.props.getItems();
+    this.props.getGroupItems(this.props.groupId);
   }
 
   render() {
@@ -69,7 +69,8 @@ class ItemList extends Component {
 }
 
 const mapStateToProps = state => ({
-  item: state.item
+  item: state.item,
+  groupId: state.group.group._id
 });
 
-export default connect(mapStateToProps, { getItems })(ItemList);
+export default connect(mapStateToProps, { getGroupItems })(ItemList);
