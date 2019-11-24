@@ -22,7 +22,7 @@ class Transaction extends Component {
         <TransactionBox
           key={transaction._id}
           transaction={transaction}
-          user={this.props.user.name}
+          user={this.props.user}
         />
       ));
       return transactionBoxes;

@@ -21,12 +21,29 @@ class ItemList extends Component {
     this.props.getGroupItems(this.props.groupId);
   }
 
+  // Renders the list.
+  // Precondition: items.length > 0
+  renderList = items => {
+    let currDate = null;
+    return (
+      <div name="ItemList" className="w-3/4 m-auto max-w-2xl">
+        {items.map(item => {
+          if (item.date !== currDate) {
+            currDate = item.date;
+            return <Item key={item._id} item={item} dateHeader={true} />;
+          }
+          return <Item key={item._id} item={item} />;
+        })}
+      </div>
+    );
+  };
+
   render() {
     const { items } = this.props.item;
     return (
       <div className="w-full text-center mb-10">
         <Link to="ItemList" smooth={true} duration={1050} offset={-80}>
-          <button className="text-center bg-gray-400 py-1 px-3 mb-12 rounded-lg focus:outline-none hover:bg-gray-500">
+          <button className="text-center bg-gray-400 py-1 px-3 mb-6 rounded-lg focus:outline-none hover:bg-gray-500">
             Transactions
             <svg
               className="w-3 h-auto m-auto"
@@ -58,11 +75,8 @@ class ItemList extends Component {
             </svg>
           </button>
         </Link>
-        <div name="ItemList" className="w-3/4 m-auto max-w-2xl">
-          {items.map(item => (
-            <Item key={item._id} item={item} />
-          ))}
-        </div>
+
+        {items.length > 0 ? this.renderList(items) : null}
       </div>
     );
   }

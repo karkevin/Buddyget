@@ -1,26 +1,42 @@
 import React, { Component } from "react";
+import TransactionModal from "./modals/TransactionModal";
 
 const capitalize = name => {
   return name.charAt(0).toUpperCase() + name.substring(1);
 };
 
-export default class TransactionBox extends Component {
+class TransactionBox extends Component {
+  state = {
+    modal: false
+  };
+
+  toggle = () => {
+    this.setState({ modal: !this.state.modal });
+  };
+
   render() {
+    // depending on source and destinaion, do the required calculations to seend correct fields to backend.
     const { source, destination, money } = this.props.transaction;
-    const user = this.props.user;
-    const other = source.name === user ? destination.name : source.name;
+    const userName = this.props.user.name;
+    let other = source.name === userName ? destination.name : source.name;
+    other = capitalize(other);
     const owe =
-      (money > 0 && source.name === user) ||
-      (money < 0 && destination.name === user)
+      (money > 0 && source.name === userName) ||
+      (money < 0 && destination.name === userName)
         ? true
         : false;
 
     return (
-      <div className="text-center p-5 mb-2">
-        <p className="text-lg">
-          {owe ? `You owe` : `${capitalize(other)} owes`}
-        </p>
-        <p className="text-2xl">{owe ? `${capitalize(other)}:` : `you:`}</p>
+      <div className="text-center p-5 mb-2 w-40">
+        <TransactionModal
+          modal={this.state.modal}
+          transaction={this.props.transaction}
+          user={this.props.user}
+          otherName={other}
+          toggle={this.toggle}
+        />
+        <p className="text-lg">{owe ? `You owe` : `${other} owes`}</p>
+        <p className="text-2xl">{owe ? `${other}:` : `you:`}</p>
         <p
           className={`${
             owe ? "text-red-400" : "text-green-400"
@@ -28,7 +44,15 @@ export default class TransactionBox extends Component {
         >
           ${Math.abs(money).toFixed(2)}
         </p>
+        <button
+          onClick={this.toggle}
+          className="bg-yellow-400 focus:outline-none rounded w-full"
+        >
+          Update
+        </button>
       </div>
     );
   }
 }
+
+export default TransactionBox;

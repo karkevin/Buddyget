@@ -18,7 +18,8 @@ const initialState = {
  * Sorts state.items based on the date.
  */
 const sortedItems = (state, newItem) => {
-  const ret = state.items;
+  const ret = [...state.items];
+
   for (let i = 0; i < ret.length; i++) {
     if (ret[i].date <= newItem.date) {
       ret.splice(i, 0, newItem);
@@ -31,7 +32,7 @@ const sortedItems = (state, newItem) => {
 
 // Updates state.items after PUT request. Assume that the item to update already exists in the state.
 const updatedItems = (state, update) => {
-  const ret = state.items;
+  const ret = [...state.items];
   for (let i = 0; i < ret.length; i++) {
     if (ret[i]._id === update._id) {
       if (ret[i].date === update.date) {

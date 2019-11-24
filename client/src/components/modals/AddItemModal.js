@@ -76,6 +76,7 @@ class AddItemModal extends Component {
     this.setState({ buyerGroup: this.checkUsers(e) });
   };
 
+  // local toggle for the modal.
   toggle = () => {
     if (this.state.msg) this.props.clearErrors();
     this.setState(initialState);
@@ -96,6 +97,7 @@ class AddItemModal extends Component {
     return [...this.state.buyerGroup, userId];
   };
 
+  // For form submissions.
   onSubmit = e => {
     e.preventDefault();
 
@@ -114,15 +116,16 @@ class AddItemModal extends Component {
     this.props.addItem(newItem);
   };
 
-  render() {
-    let users = [];
-    if (
-      Object.keys(this.props.group.group).length &&
-      !this.props.group.loading
-    ) {
-      users = this.props.group.group.users;
+  getUsers = () => {
+    if (!this.props.group.group.users) {
+      return [];
+    } else {
+      return this.props.group.group.users;
     }
+  };
 
+  render() {
+    let users = this.getUsers();
     return (
       <Modal
         isOpen={this.props.modal}

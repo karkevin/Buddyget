@@ -67,7 +67,6 @@ class ItemModal extends Component {
   // for normal form changes
   onChange = e => {
     if (e.target.name === "price") {
-      console.log(e.target.value);
       this.setState({
         [e.target.name]: !e.target.value ? null : parseFloat(e.target.value)
       });
@@ -122,14 +121,16 @@ class ItemModal extends Component {
     this.props.toggle();
   };
 
-  render() {
-    let users = [];
-    if (
-      Object.keys(this.props.group.group).length &&
-      !this.props.group.loading
-    ) {
-      users = this.props.group.group.users;
+  getUsers = () => {
+    if (!this.props.group.group.users) {
+      return [];
+    } else {
+      return this.props.group.group.users;
     }
+  };
+
+  render() {
+    const users = this.getUsers();
 
     return (
       <Modal
