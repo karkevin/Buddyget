@@ -113,7 +113,7 @@ class TransactionModal extends Component {
 
         <hr />
         <form className="mt-2 mb-8" onSubmit={this.onSubmit}>
-          <div className="flex items-center justify-center mb-4">
+          <div className="flex flex-wrap items-center justify-center mb-4">
             <label className="my-3 mr-5">
               {this.state.money >= 0
                 ? `${this.props.otherName} owes You`
@@ -124,7 +124,7 @@ class TransactionModal extends Component {
               name="money"
               step=".01"
               onChange={this.onChange}
-              className="font-montserrat shadow appearance-none py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
+              className="font-montserrat shadow appearance-none w-24 sm:w-40 py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
               defaultValue={this.state.money.toFixed(2)}
             />
           </div>
