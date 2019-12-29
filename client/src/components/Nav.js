@@ -14,11 +14,8 @@ class Nav extends Component {
 
   render() {
     return (
-      <nav
-        className="fixed w-full top-0 flex flex-wrap items-center justify-between py-3 px-2 rounded-b-lg"
-        style={{ backgroundColor: "#788CFF" }}
-      >
-        <p className="text-xl text-white font-bold px-3">BuddyGet</p>
+      <nav className="fixed w-full top-0 flex flex-wrap items-center justify-between py-3 px-2 rounded-b-lg bg-violet">
+        <p className="text-xl text-white font-bold text-3xl px-3">BuddyGet</p>
         <button
           onClick={this.burgerOpen}
           className="flex items-center px-3 text-blue-100 focus:outline-none sm:hidden"
@@ -51,7 +48,7 @@ class Nav extends Component {
           <div className="text-sm sm:flex-grow px-3">
             <a
               href="https://github.com/karkevin"
-              className="block mt-4 sm:inline-block sm:mt-0 text-blue-200 hover:text-white"
+              className="block mt-4 sm:inline-block sm:mt-0 text-blue-200 font-medium hover:text-white transition-bg"
             >
               Github
             </a>

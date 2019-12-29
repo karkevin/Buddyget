@@ -48,7 +48,7 @@ class Item extends Component {
             <p className="text-lg mr-2 font-montserrat">${price}</p>
             <button
               onClick={this.toggleItemModal}
-              className="bg-blue-400 hover:bg-blue-500 p-2 rounded-full focus:outline-none "
+              className="bg-blue-400 hover:bg-blue-500 p-2 rounded-full shadow-card focus:outline-none shadow-card transition-bg"
             >
               <svg
                 className="w-3"

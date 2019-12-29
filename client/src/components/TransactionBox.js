@@ -46,9 +46,9 @@ class TransactionBox extends Component {
         </p>
         <button
           onClick={this.toggle}
-          className="bg-yellow-400 focus:outline-none rounded w-full"
+          className="bg-yellow-400 focus:outline-none hover:bg-yellow-500 rounded w-full shadow-card py-1 text-white font-bold transition-bg"
         >
-          Update
+          UPDATE
         </button>
       </div>
     );

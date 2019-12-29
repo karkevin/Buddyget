@@ -147,7 +147,6 @@ router.put("/:id", auth, (req, res) => {
       // add new item data to transactions
       splitPrice = (price / buyerGroup.length).toFixed(2);
       updateTransaction(buyer, buyerGroup, splitPrice);
-
       // Returns the item with all fields populated.
       Item.findById(oldItem._id)
         .populate("buyer buyerGroup", "-password")

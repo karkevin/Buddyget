@@ -43,7 +43,7 @@ class ItemList extends Component {
     return (
       <div className="w-full text-center mb-10">
         <Link to="ItemList" smooth={true} duration={1050} offset={-80}>
-          <button className="text-center bg-gray-400 py-1 px-3 mb-6 rounded-lg focus:outline-none hover:bg-gray-500">
+          <button className="text-center font-medium bg-gray-400 py-1 px-3 mb-6 rounded-lg focus:outline-none hover:bg-gray-500 transition-bg">
             Transactions
             <svg
               className="w-3 h-auto m-auto"
