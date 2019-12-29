@@ -48,7 +48,7 @@ class Nav extends Component {
           <div className="text-sm sm:flex-grow px-3">
             <a
               href="https://github.com/karkevin"
-              className="block mt-4 sm:inline-block sm:mt-0 text-blue-200 font-medium hover:text-white transition-bg"
+              className="block mt-4 sm:inline-block sm:mt-0 text-blue-200 text-xl font-medium hover:text-white transition-all"
             >
               Github
             </a>

@@ -16,7 +16,7 @@ class Logout extends Component {
           <a
             href=""
             onClick={this.props.logoutUser}
-            className="block mt-4 sm:inline-block sm:mt-0 text-blue-200 font-medium hover:text-white transition-bg"
+            className="block mt-4 sm:inline-block sm:mt-0 text-blue-200 text-xl font-medium hover:text-white transition-all"
           >
             Logout
           </a>

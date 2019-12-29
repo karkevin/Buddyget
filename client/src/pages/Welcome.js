@@ -145,7 +145,7 @@ export default function Welcome() {
         </div>
 
         {/* Sign up */}
-        <div className="mx-2 bg-gray-100 rounded shadow-card p-4 xs:p-8 sm:mx-10 lg:p-12 lg:max-w-4xl lg:mx-auto">
+        <div className="mx-2 bg-gray-100 mb-32 rounded shadow-card p-4 xs:p-8 sm:mx-10 lg:p-12 lg:max-w-4xl lg:mx-auto">
           <p className="font-bold text-2xl text-center mb-8 sm:text-3xl lg:text-4xl">
             Get started with Buddyget
           </p>

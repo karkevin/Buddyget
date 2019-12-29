@@ -27,7 +27,7 @@ class Home extends Component {
           <div className="mb-20"></div>
           <button
             className="fixed bottom-0 left-1/2 flex justify-center text-white font-bold 
-              shadow-card block h-12 w-12 z-1 rounded-full text-4xl mx-auto mb-8 focus:outline-none 
+              shadow-card block h-12 w-12 z-1 rounded-full text-4xl mx-auto mb-12 focus:outline-none 
               bg-violet hover:bg-violet-dark transition-bg md:w-64 md:text-2xl md:rounded-lg"
             style={{
               transform: "translate(-50%, 0)"
