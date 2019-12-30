@@ -39,7 +39,7 @@ class Item extends Component {
         {dateHeader ? (
           <p className="text-left font-bold text-lg mt-8 mb-2">{date}</p>
         ) : null}
-        <div className="mb-4 flex justify-between items-baseline">
+        <div className="mb-1 p-2 flex justify-between items-baseline bg-gray-100 rounded-sm shadow-md">
           <div className="text-left">
             <p className="inline-block text-xl">{buyer}</p> |{" "}
             <p className="inline-block">{location}</p>
@@ -48,7 +48,7 @@ class Item extends Component {
             <p className="text-lg mr-2 font-montserrat">${price}</p>
             <button
               onClick={this.toggleItemModal}
-              className="bg-blue-400 hover:bg-blue-500 p-2 rounded-full shadow-card focus:outline-none shadow-card transition-bg"
+              className="bg-blue-500 hover:bg-blue-600 p-2 rounded-full shadow-card focus:outline-none shadow-card transition-bg"
             >
               <svg
                 className="w-3"
@@ -65,6 +65,7 @@ class Item extends Component {
                         c-18.543-18.543-48.653-18.543-67.259,0l-45.961,45.961l107.59,107.59l53.611-53.611
                         C532.495,100.753,532.495,77.559,518.113,63.177z M0.3,512.69c-1.958,8.812,5.998,16.708,14.811,14.565l119.891-29.069
                         L27.473,390.597L0.3,512.69z"
+                    fill="white"
                   />
                 </g>
               </svg>

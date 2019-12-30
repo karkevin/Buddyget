@@ -4,10 +4,9 @@ import React, { Fragment } from "react";
 import Buttons from "../components/Buttons";
 import Card from "../components/Card";
 import Footer from "../components/Footer";
+import Title from "../components/Title";
 
 // assets
-import favicon from "../../public/favicon.png";
-import logo from "../../public/logo.png";
 import buddyget from "../../public/buddyget.png";
 import circle from "../../public/circle.png";
 import triangle from "../../public/triangle.png";
@@ -30,17 +29,7 @@ export default function Welcome() {
           id="top"
           className="flex flex-wrap justify-between items-center px-5 py-2 mb-6 sm:px-8 sm:py-5 max-w-9xl lg:mx-auto"
         >
-          <div className="flex items-center">
-            <img src={logo} alt="Buddyget" className="h-16 xs:hidden" />
-            <img
-              src={favicon}
-              alt="Buddyget"
-              className="hidden xs:block h-16 sm:h-20 lg:h-24"
-            />
-            <p className="hidden xs:inline-block font-bold text-2xl ml-2 sm:text-3xl sm:ml-6 md:text-4xl">
-              Buddyget
-            </p>
-          </div>
+          <Title />
           <div className="md:mr-24 md:pr-4 lg:pr-0 xl:mr-16">
             <Buttons />
           </div>

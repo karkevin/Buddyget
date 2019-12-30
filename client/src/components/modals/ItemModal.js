@@ -6,6 +6,10 @@ import { deleteItem, updateItem } from "../../redux/actions/itemActions";
 import { clearErrors } from "../../redux/actions/errorActions";
 import PropTypes from "prop-types";
 
+const capitalize = name => {
+  return name.charAt(0).toUpperCase() + name.substring(1);
+};
+
 // update/delete from here, depending on this.state's values
 class ItemModal extends Component {
   static propTypes = {
@@ -184,7 +188,7 @@ class ItemModal extends Component {
               name="buyer"
               onChange={this.buyerChange}
               className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
-              defaultValue={this.props.item.buyer.name}
+              defaultValue={capitalize(this.props.item.buyer.name)}
             />
           </div>
           <div className="mb-4">
@@ -225,7 +229,7 @@ class ItemModal extends Component {
                     className="mr-1"
                     onChange={this.onClick}
                   />
-                  {user.name.charAt(0).toUpperCase() + user.name.slice(1)}
+                  {capitalize(user.name)}
                 </span>
               ))}
             </div>
