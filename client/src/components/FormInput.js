@@ -10,7 +10,7 @@ export default function FormInput(props) {
         type={props.name}
         name={props.name.toLowerCase()}
         onChange={props.onChange}
-        className="appearance-none flex-1 w-full py-1 lg:py-2 focus:outline-none rounded-sm border border-gray-600 border-solid"
+        className="appearance-none flex-1 w-full py-1 px-2 lg:py-2 focus:outline-none rounded-sm border border-gray-600 border-solid"
       />
     </div>
   );

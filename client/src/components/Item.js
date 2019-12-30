@@ -39,7 +39,7 @@ class Item extends Component {
         {dateHeader ? (
           <p className="text-left font-bold text-lg mt-8 mb-2">{date}</p>
         ) : null}
-        <div className="mb-1 p-2 flex justify-between items-baseline bg-gray-100 rounded-sm shadow-md">
+        <div className="mb-1 p-2 flex justify-between items-baseline bg-white rounded-sm shadow-md">
           <div className="text-left">
             <p className="inline-block text-xl">{buyer}</p> |{" "}
             <p className="inline-block">{location}</p>
