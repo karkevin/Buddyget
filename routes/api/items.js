@@ -8,6 +8,8 @@ const auth = require("../../middleware/auth");
 const Item = require("../../models/Item");
 const Transaction = require("../../models/Transaction");
 const Group = require("../../models/Group");
+const Log = require("../../models/Log");
+const User = require("../../models/User");
 
 // @route   GET api/items
 // @desc    Get All Items
@@ -61,7 +63,6 @@ router.get("/group/:groupId", auth, (req, res) => {
 // @route   GET api/items/user/:userId
 // @desc    Get item by user id
 // @acess   Private
-
 router.get("/user/:userId", auth, (req, res) => {
   const { userId } = req.params;
 
@@ -111,9 +112,18 @@ router.post("/", auth, (req, res) => {
       updateTotalExpenses(newItem.buyer, newItem.price);
       const splitPrice = (newItem.price / newItem.buyerGroup.length).toFixed(2);
       updateTransaction(newItem.buyer, newItem.buyerGroup, splitPrice);
+
+      // Add activity to log.
       Item.findById(item._id)
         .populate("buyer buyerGroup", "-password")
-        .then(item => res.json(item));
+        .then(item => {
+          Log.create({
+            description: `${capitalize(
+              item.buyer.name
+            )} spent ${price} at ${location}`
+          });
+          return res.json(item);
+        });
     })
     .catch(err => res.status(400).json({ msg: "Cannot create item" }));
 });
@@ -122,10 +132,9 @@ router.post("/", auth, (req, res) => {
 // @desc    update an item
 // @access  Private
 router.put("/:id", auth, (req, res) => {
-  const { buyer, buyerGroup, price, location } = req.body;
-
+  const { buyer, buyerGroup, price, location, date } = req.body;
   if (price <= 0) {
-    return res.status(400).json({ msg: "Price msut be positive." });
+    return res.status(400).json({ msg: "Price must be positive." });
   }
   if (!location || !price || !buyerGroup) {
     return res.status(400).json({ msg: "Please fill out all fields." });
@@ -135,9 +144,8 @@ router.put("/:id", auth, (req, res) => {
     return res.status(400).json({ msg: "User not in group." });
   }
 
-  Item.findByIdAndUpdate(req.params.id, req.body)
+  Item.findById(req.params.id)
     .then(oldItem => {
-      // NOTE this can be later optimized.
       updateTotalExpenses(oldItem.buyer, price - oldItem.price);
 
       // delete old item from transactions
@@ -147,10 +155,22 @@ router.put("/:id", auth, (req, res) => {
       // add new item data to transactions
       splitPrice = (price / buyerGroup.length).toFixed(2);
       updateTransaction(buyer, buyerGroup, splitPrice);
+    })
+    .catch(err =>
+      res.status(400).json({ msg: "Prices could not be updated", err })
+    );
+
+  Item.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .populate("buyer buyerGroup", "-password")
+    .then(item => {
       // Returns the item with all fields populated.
-      Item.findById(oldItem._id)
-        .populate("buyer buyerGroup", "-password")
-        .then(item => res.json(item));
+
+      // Log.create({
+      //   description: `${capitalize(
+      //     buyer.name
+      //   )} deleted ${price} at ${location}`
+      // });
+      return res.json(item);
     })
     .catch(err =>
       res.status(400).json({ msg: "Item could not be updated", err })
@@ -170,7 +190,16 @@ router.delete("/:id", auth, (req, res) => {
       // Since the item is populated, need to access its fields to pass in the correct arguments for updateTransaction
       const itemBuyerGroup = item.buyerGroup.map(user => user._id);
       updateTransaction(item.buyer._id, itemBuyerGroup, splitPrice);
-      item.remove().then(delItem => res.json(delItem));
+      item.remove().then(delItem => {
+        const { buyer, price, location } = delItem;
+        Log.create({
+          description: `${capitalize(
+            buyer.name
+          )} deleted ${price} at ${location}`
+        });
+
+        return res.json(delItem);
+      });
     })
     .catch(err =>
       res.status(400).json({ msg: "Item could not be deleted", err })
@@ -208,10 +237,23 @@ function updateTransaction(buyerId, buyerGroup, splitPrice) {
   });
 }
 
-function updateTotalExpenses(buyerId, price) {
+const updateTotalExpenses = (buyerId, price) => {
   Group.findOne({ users: { $elemMatch: { $in: buyerId } } })
     .then(group => group.updateOne({ $inc: { totalExpenses: price } }))
     .catch(err => console.log(err));
-}
+};
+
+// capitalizes a string.
+const capitalize = name => {
+  return name.charAt(0).toUpperCase() + name.substring(1);
+};
+
+const getUserFromAuth = id => {
+  User.findById(id)
+    .then(user => {
+      return user.name;
+    })
+    .catch(err => console.log(err));
+};
 
 module.exports = router;

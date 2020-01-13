@@ -46,7 +46,6 @@ export const addItem = item => (dispatch, getState) => {
     })
     .catch(err => {
       dispatch(getErrors(err.response.data, err.response.status, "ITEM_FAIL"));
-      // dispatch(getErrors(err.response.data, err.response.status, "ITEM_FAIL"));
       console.log(err);
     });
 };

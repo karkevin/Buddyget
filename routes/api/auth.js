@@ -11,7 +11,6 @@ const auth = require("../../middleware/auth");
 // @access  Public
 router.post("/", (req, res) => {
   const { email, password } = req.body;
-
   if (!email || !password) {
     return res.status(400).json({ msg: "Please fill out all fields" });
   }
