@@ -119,7 +119,8 @@ router.post("/", auth, (req, res) => {
           Log.create({
             description: `${capitalize(
               item.buyer.name
-            )} spent ${price} at ${location}`
+            )} spent ${price} at ${location}`,
+            groupId: item.groupId
           });
           return res.json(item);
         });
@@ -176,7 +177,8 @@ router.put("/:id", auth, (req, res) => {
           Log.create({
             description: `${capitalize(
               item.buyer.name
-            )} updated ${updateArray.toString()} at ${location}`
+            )} updated ${updateArray.toString()} at ${location}`,
+            groupId: item.groupId
           });
           return res.json(item);
         });
@@ -200,11 +202,12 @@ router.delete("/:id", auth, (req, res) => {
       const itemBuyerGroup = item.buyerGroup.map(user => user._id);
       updateTransaction(item.buyer._id, itemBuyerGroup, splitPrice);
       item.remove().then(delItem => {
-        const { buyer, price, location } = delItem;
+        const { buyer, price, location, groupId } = delItem;
         Log.create({
           description: `${capitalize(
             buyer.name
-          )} deleted ${price} at ${location}`
+          )} deleted ${price} at ${location}`,
+          groupId
         });
 
         return res.json(delItem);

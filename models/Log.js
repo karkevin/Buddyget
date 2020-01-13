@@ -7,6 +7,11 @@ const LogSchema = new Schema(
       type: String,
       required: true
     },
+    groupId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "group",
+      required: true
+    },
     date: {
       type: Date,
       default: Date.now()

@@ -6,11 +6,12 @@ const auth = require("../../middleware/auth");
 
 const Log = require("../../models/Log");
 
-// @route   GET api/log
-// @desc    Gets all logs
+// @route   GET api/log/group/:id
+// @desc    Gets groups logs
 // @access  Private
-router.get("/", auth, (req, res) => {
-  Log.find()
+router.get("/group/:groupId", auth, (req, res) => {
+  const { groupId } = req.params;
+  Log.find({ groupId })
     .sort({ date: -1 })
     .then(log => res.json(log));
 });
@@ -19,13 +20,14 @@ router.get("/", auth, (req, res) => {
 // @desc    Adds an activity
 // @access  Private
 router.post("/", auth, (req, res) => {
-  const { description } = req.body;
-  if (!description) {
+  const { description, groupId } = req.body;
+  if (!description || !groupId) {
     return res.status(400).json({ msg: "Invalid activity" });
   }
 
   const newLog = new Log({
-    description
+    description,
+    groupId
   });
   newLog
     .save()
