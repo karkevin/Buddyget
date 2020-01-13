@@ -3,6 +3,8 @@ const router = express.Router();
 
 const Transaction = require("../../models/Transaction");
 const auth = require("../../middleware/auth");
+const User = require("../../models/User");
+const Log = require("../../models/Log");
 
 // @route   GET /api/transactions
 // @desc    Get all transactions
@@ -50,14 +52,37 @@ router.put("/", auth, (req, res) => {
     },
     { money }
   )
+    .populate("source destination")
     .then(oldTransaction =>
-      Transaction.findById(oldTransaction._id).then(transaction =>
-        res.json(transaction)
-      )
+      Transaction.findById(oldTransaction._id).then(transaction => {
+        Log.create({
+          description: `Transaction between ${capitalize(
+            oldTransaction.source.name
+          )} and ${capitalize(
+            oldTransaction.destination.name
+          )} changed from ${oldTransaction.money.toFixed(
+            2
+          )} to ${transaction.money.toFixed(2)}`
+        });
+        return res.json(transaction);
+      })
     )
     .catch(err =>
       res.status(400).json({ msg: "Transaction could not be updated", err })
     );
 });
+
+const getUserFromAuth = id => {
+  User.findById(id)
+    .then(user => {
+      return user.name;
+    })
+    .catch(err => console.log(err));
+};
+
+// capitalizes a string.
+const capitalize = name => {
+  return name.charAt(0).toUpperCase() + name.substring(1);
+};
 
 module.exports = router;

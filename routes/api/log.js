@@ -10,7 +10,6 @@ const Log = require("../../models/Log");
 // @desc    Gets all logs
 // @access  Private
 router.get("/", auth, (req, res) => {
-  console.log(auth.arguments["0"].user);
   Log.find()
     .sort({ date: -1 })
     .then(log => res.json(log));

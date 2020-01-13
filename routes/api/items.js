@@ -9,7 +9,6 @@ const Item = require("../../models/Item");
 const Transaction = require("../../models/Transaction");
 const Group = require("../../models/Group");
 const Log = require("../../models/Log");
-const User = require("../../models/User");
 
 // @route   GET api/items
 // @desc    Get All Items
@@ -144,33 +143,43 @@ router.put("/:id", auth, (req, res) => {
     return res.status(400).json({ msg: "User not in group." });
   }
 
-  Item.findById(req.params.id)
+  let updateArray = [];
+
+  Item.findByIdAndUpdate(req.params.id, req.body)
     .then(oldItem => {
-      updateTotalExpenses(oldItem.buyer, price - oldItem.price);
+      for (let key in req.body) {
+        if (JSON.stringify(req.body[key]) !== JSON.stringify(oldItem[key])) {
+          updateArray.push(key);
+        }
+      }
 
-      // delete old item from transactions
-      let splitPrice = (-oldItem.price / oldItem.buyerGroup.length).toFixed(2);
-      updateTransaction(oldItem.buyer, oldItem.buyerGroup, splitPrice);
+      if (
+        price !== oldItem.price ||
+        JSON.stringify(buyerGroup) !== JSON.stringify(oldItem.buyerGroup)
+      ) {
+        updateTotalExpenses(oldItem.buyer, price - oldItem.price);
 
-      // add new item data to transactions
-      splitPrice = (price / buyerGroup.length).toFixed(2);
-      updateTransaction(buyer, buyerGroup, splitPrice);
-    })
-    .catch(err =>
-      res.status(400).json({ msg: "Prices could not be updated", err })
-    );
+        // delete old item from transactions
+        let splitPrice = (-oldItem.price / oldItem.buyerGroup.length).toFixed(
+          2
+        );
+        updateTransaction(oldItem.buyer, oldItem.buyerGroup, splitPrice);
 
-  Item.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    .populate("buyer buyerGroup", "-password")
-    .then(item => {
+        // add new item data to transactions
+        splitPrice = (price / buyerGroup.length).toFixed(2);
+        updateTransaction(buyer, buyerGroup, splitPrice);
+      }
       // Returns the item with all fields populated.
-
-      // Log.create({
-      //   description: `${capitalize(
-      //     buyer.name
-      //   )} deleted ${price} at ${location}`
-      // });
-      return res.json(item);
+      Item.findById(oldItem._id)
+        .populate("buyer buyerGroup", "-password")
+        .then(item => {
+          Log.create({
+            description: `${capitalize(
+              item.buyer.name
+            )} updated ${updateArray.toString()} at ${location}`
+          });
+          return res.json(item);
+        });
     })
     .catch(err =>
       res.status(400).json({ msg: "Item could not be updated", err })
@@ -246,14 +255,6 @@ const updateTotalExpenses = (buyerId, price) => {
 // capitalizes a string.
 const capitalize = name => {
   return name.charAt(0).toUpperCase() + name.substring(1);
-};
-
-const getUserFromAuth = id => {
-  User.findById(id)
-    .then(user => {
-      return user.name;
-    })
-    .catch(err => console.log(err));
 };
 
 module.exports = router;
