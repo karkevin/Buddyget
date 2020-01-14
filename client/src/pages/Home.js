@@ -22,7 +22,6 @@ class Home extends Component {
         <div>
           <Nav />
           <Transactions />
-
           <ItemList />
           <div className="mb-20"></div>
           <button

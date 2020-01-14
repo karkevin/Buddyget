@@ -4,7 +4,6 @@ const router = express.Router();
 const Transaction = require("../../models/Transaction");
 const auth = require("../../middleware/auth");
 const User = require("../../models/User");
-const Log = require("../../models/Log");
 
 // @route   GET /api/transactions
 // @desc    Get all transactions
@@ -55,15 +54,16 @@ router.put("/", auth, (req, res) => {
     .populate("source destination")
     .then(oldTransaction =>
       Transaction.findById(oldTransaction._id).then(transaction => {
-        Log.create({
-          description: `Transaction between ${capitalize(
+        addLog(
+          `Transaction between ${capitalize(
             oldTransaction.source.name
           )} and ${capitalize(
             oldTransaction.destination.name
           )} changed from ${oldTransaction.money.toFixed(
             2
-          )} to ${transaction.money.toFixed(2)}`
-        });
+          )} to ${transaction.money.toFixed(2)}`,
+          oldTransaction.source._id
+        );
         return res.json(transaction);
       })
     )
@@ -83,6 +83,16 @@ const getUserFromAuth = id => {
 // capitalizes a string.
 const capitalize = name => {
   return name.charAt(0).toUpperCase() + name.substring(1);
+};
+
+// adds a log to a group with a specified description.
+const addLog = (description, userId) => {
+  Group.findOneAndUpdate(
+    { users: { $elemMatch: { $in: userId } } },
+    {
+      $push: { logs: { description }, $sort: { date: -1 } }
+    }
+  ).catch(err => console.log(err));
 };
 
 module.exports = router;

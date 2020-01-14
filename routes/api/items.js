@@ -8,7 +8,6 @@ const auth = require("../../middleware/auth");
 const Item = require("../../models/Item");
 const Transaction = require("../../models/Transaction");
 const Group = require("../../models/Group");
-const Log = require("../../models/Log");
 
 // @route   GET api/items
 // @desc    Get All Items
@@ -116,12 +115,10 @@ router.post("/", auth, (req, res) => {
       Item.findById(item._id)
         .populate("buyer buyerGroup", "-password")
         .then(item => {
-          Log.create({
-            description: `${capitalize(
-              item.buyer.name
-            )} spent ${price} at ${location}`,
-            groupId: item.groupId
-          });
+          addLog(
+            `${capitalize(item.buyer.name)} spent ${price} at ${location}`,
+            item.groupId
+          );
           return res.json(item);
         });
     })
@@ -174,12 +171,12 @@ router.put("/:id", auth, (req, res) => {
       Item.findById(oldItem._id)
         .populate("buyer buyerGroup", "-password")
         .then(item => {
-          Log.create({
-            description: `${capitalize(
+          addLog(
+            `${capitalize(
               item.buyer.name
             )} updated ${updateArray.toString()} at ${location}`,
-            groupId: item.groupId
-          });
+            item.groupId
+          );
           return res.json(item);
         });
     })
@@ -203,13 +200,10 @@ router.delete("/:id", auth, (req, res) => {
       updateTransaction(item.buyer._id, itemBuyerGroup, splitPrice);
       item.remove().then(delItem => {
         const { buyer, price, location, groupId } = delItem;
-        Log.create({
-          description: `${capitalize(
-            buyer.name
-          )} deleted ${price} at ${location}`,
+        addLog(
+          `${capitalize(buyer.name)} deleted ${price} at ${location}`,
           groupId
-        });
-
+        );
         return res.json(delItem);
       });
     })
@@ -248,6 +242,13 @@ function updateTransaction(buyerId, buyerGroup, splitPrice) {
     });
   });
 }
+
+// adds a log to a group with a specified description.
+const addLog = (description, groupId) => {
+  Group.findByIdAndUpdate(groupId, {
+    $push: { logs: { description }, $sort: { date: 1 } }
+  }).catch(err => console.log(err));
+};
 
 const updateTotalExpenses = (buyerId, price) => {
   Group.findOne({ users: { $elemMatch: { $in: buyerId } } })

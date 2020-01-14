@@ -13,6 +13,20 @@ const groupSchema = new Schema({
   transactions: {
     type: [{ type: Schema.Types.ObjectId, ref: "transaction" }]
   },
+  logs: {
+    type: [
+      {
+        description: {
+          type: String,
+          required: true
+        },
+        date: {
+          type: Date,
+          default: Date.now()
+        }
+      }
+    ]
+  },
   totalExpenses: {
     type: Number,
     required: true,

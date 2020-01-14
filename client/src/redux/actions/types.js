@@ -31,3 +31,8 @@ export const GROUP_LOADING = "GROUP_LOADING";
 // error action types
 export const GET_ERRORS = "GET_ERRORS";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
+
+// Log action types
+export const LOGS_LOADING = "LOGS_LOADING";
+export const GET_GROUP_LOGS = "GET_GROUP_LOGS";
+export const ADD_LOG = "ADD_LOG";

@@ -44,7 +44,7 @@ class ItemList extends Component {
       <div className="w-full text-center mb-10">
         <Link to="ItemList" smooth={true} duration={1050} offset={-80}>
           <button className="text-center font-medium text-xl bg-gray-400 py-1 px-8 mb-6 rounded-lg shadow-card focus:outline-none hover:bg-gray-500 transition-bg">
-            Transactions
+            Expenses
             <svg
               className="w-3 h-auto m-auto"
               version="1.0"
