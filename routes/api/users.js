@@ -71,11 +71,15 @@ function updateGroup(newUser) {
     if (!group) {
       return res.status(400).json({ msg: "Group doesn't exist" });
     }
+    if (group.users.length > 10) {
+      return res.status(400).json({ msg: "User limit exceeds 10" });
+    }
 
     group.users.forEach(function(userid) {
       const newTransaction = new Transaction({
         source: newUser.id,
-        destination: userid
+        destination: userid,
+        groupId: group._id
       });
 
       newTransaction

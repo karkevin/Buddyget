@@ -15,7 +15,8 @@ class TransactionModal extends Component {
     toggle: PropTypes.func.isRequired,
     transaction: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
-    otherName: PropTypes.string.isRequired
+    otherName: PropTypes.string.isRequired,
+    groupName: PropTypes.string.isRequired
   };
 
   initialState = () => {
@@ -60,18 +61,19 @@ class TransactionModal extends Component {
 
     const { money } = this.state;
     const { user } = this.props;
-    const { source, destination } = this.props.transaction;
+    const { source, destination, groupId } = this.props.transaction;
 
     const updatedMoney = source._id === user._id ? -1 * money : money;
 
     const updatedTransaction = {
       source: source._id,
       destination: destination._id,
-      money: updatedMoney
+      money: updatedMoney,
+      groupId
     };
 
-    // Add item via the addItem action
-    this.props.updateTransaction(updatedTransaction);
+    // Update transaction via the updateTransaction action
+    this.props.updateTransaction(updatedTransaction, this.props.groupName);
   };
 
   render() {
@@ -138,7 +140,9 @@ class TransactionModal extends Component {
 }
 
 const mapStateToProps = state => ({
-  error: state.error
+  error: state.error,
+  // need this to get group from update transaction.
+  groupName: state.group.group.name
 });
 
 export default connect(mapStateToProps, { clearErrors, updateTransaction })(

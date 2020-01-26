@@ -35,6 +35,7 @@ class Home extends Component {
           >
             {window.innerWidth < 768 ? "+" : "ADD EXPENSE"}
           </button>
+          <div className="fixed bottom-0 bg-violet w-full max-height-sm"></div>
           <AddItemModal modal={this.state.showItemModal} toggle={this.toggle} />
           <Footer />
         </div>

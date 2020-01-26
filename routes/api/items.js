@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
+const addLog = require("../functions").addlog;
+const capitalize = require("../functions").capitalize;
+
 // auth middleware
 const auth = require("../../middleware/auth");
 
@@ -41,7 +44,6 @@ router.get("/:id", auth, (req, res) => {
 // @route   GET api/items/group/:groupId
 // @desc    Get item by group id
 // @acess   Private
-
 router.get("/group/:groupId", auth, (req, res) => {
   const { groupId } = req.params;
 
@@ -107,7 +109,7 @@ router.post("/", auth, (req, res) => {
   newItem
     .save()
     .then(item => {
-      updateTotalExpenses(newItem.buyer, newItem.price);
+      updateTotalExpenses(newItem.groupId, newItem.price);
       const splitPrice = (newItem.price / newItem.buyerGroup.length).toFixed(2);
       updateTransaction(newItem.buyer, newItem.buyerGroup, splitPrice);
 
@@ -141,6 +143,7 @@ router.put("/:id", auth, (req, res) => {
     return res.status(400).json({ msg: "User not in group." });
   }
 
+  // used for logging
   let updateArray = [];
 
   Item.findByIdAndUpdate(req.params.id, req.body)
@@ -155,7 +158,7 @@ router.put("/:id", auth, (req, res) => {
         price !== oldItem.price ||
         JSON.stringify(buyerGroup) !== JSON.stringify(oldItem.buyerGroup)
       ) {
-        updateTotalExpenses(oldItem.buyer, price - oldItem.price);
+        updateTotalExpenses(oldItem.groupId, price - oldItem.price);
 
         // delete old item from transactions
         let splitPrice = (-oldItem.price / oldItem.buyerGroup.length).toFixed(
@@ -192,7 +195,7 @@ router.delete("/:id", auth, (req, res) => {
   Item.findById(req.params.id)
     .populate("buyer buyerGroup", "-password")
     .then(item => {
-      updateTotalExpenses(item.buyer, -item.price);
+      updateTotalExpenses(item.groupId, -item.price);
       const splitPrice = (-item.price / item.buyerGroup.length).toFixed(2);
 
       // Since the item is populated, need to access its fields to pass in the correct arguments for updateTransaction
@@ -243,22 +246,10 @@ function updateTransaction(buyerId, buyerGroup, splitPrice) {
   });
 }
 
-// adds a log to a group with a specified description.
-const addLog = (description, groupId) => {
-  Group.findByIdAndUpdate(groupId, {
-    $push: { logs: { description }, $sort: { date: 1 } }
-  }).catch(err => console.log(err));
-};
-
-const updateTotalExpenses = (buyerId, price) => {
-  Group.findOne({ users: { $elemMatch: { $in: buyerId } } })
+const updateTotalExpenses = (groupId, price) => {
+  Group.findById(groupId)
     .then(group => group.updateOne({ $inc: { totalExpenses: price } }))
     .catch(err => console.log(err));
-};
-
-// capitalizes a string.
-const capitalize = name => {
-  return name.charAt(0).toUpperCase() + name.substring(1);
 };
 
 module.exports = router;

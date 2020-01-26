@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
+const addLog = require("../functions").addlog;
+const capitalize = require("../functions").capitalize;
+
 const Transaction = require("../../models/Transaction");
 const auth = require("../../middleware/auth");
 const User = require("../../models/User");
@@ -33,8 +36,8 @@ router.get("/:userId", auth, (req, res) => {
 // @desc    Updates a transaction between 2 users.
 // @access  Private
 router.put("/", auth, (req, res) => {
-  const { money, source, destination } = req.body;
-  if (money === null || !source || !destination) {
+  const { money, source, destination, groupId } = req.body;
+  if (money === null || !source || !destination || !groupId) {
     return res.status(400).json({ msg: "Please fill out all fields" });
   }
 
@@ -62,7 +65,7 @@ router.put("/", auth, (req, res) => {
           )} changed from ${oldTransaction.money.toFixed(
             2
           )} to ${transaction.money.toFixed(2)}`,
-          oldTransaction.source._id
+          oldTransaction.groupId
         );
         return res.json(transaction);
       })
@@ -78,21 +81,6 @@ const getUserFromAuth = id => {
       return user.name;
     })
     .catch(err => console.log(err));
-};
-
-// capitalizes a string.
-const capitalize = name => {
-  return name.charAt(0).toUpperCase() + name.substring(1);
-};
-
-// adds a log to a group with a specified description.
-const addLog = (description, userId) => {
-  Group.findOneAndUpdate(
-    { users: { $elemMatch: { $in: userId } } },
-    {
-      $push: { logs: { description }, $sort: { date: -1 } }
-    }
-  ).catch(err => console.log(err));
 };
 
 module.exports = router;

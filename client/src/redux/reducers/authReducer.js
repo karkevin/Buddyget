@@ -1,14 +1,3 @@
-// import {
-//   USER_LOADING,
-//   USER_LOADED,
-//   AUTH_ERROR,
-//   LOGIN_SUCCESS,
-//   LOGIN_FAIL,
-//   LOGOUT_SUCCESS,
-//   REGISTER_FAIL,
-//   REGISTER_SUCCESS
-// } from "../actions/types";
-
 const initialState = {
   token: localStorage.getItem("token"),
   authenticated: null,

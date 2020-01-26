@@ -1,7 +1,3 @@
-// import { updateTransaction } from "../actions/groupActions";
-
-// import { GET_GROUP, ADD_GROUP, GROUP_LOADING } from "../actions/types";
-
 const initialState = {
   group: {},
   loading: false
@@ -49,7 +45,8 @@ export default function(state = initialState, action) {
     case "UPDATE_TRANSACTION":
       return {
         ...state,
-        group: updateTransaction(state, action.payload)
+        group: updateTransaction(state, action.payload),
+        loading: true
       };
     default:
       return state;

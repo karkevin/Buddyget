@@ -40,7 +40,6 @@ export const registerGroup = name => dispatch => {
       dispatch(getGroupItems(res.data._id));
     })
     .catch(err => {
-      // TODO change so you need permission to get Group.
       dispatch(getErrors(err.response.data, err.response.status));
       dispatch({
         type: REGISTER_GROUP_FAIL
@@ -63,12 +62,16 @@ export const getGroup = name => (dispatch, getState) => {
 };
 
 // updates the group transactions.
-export const updateTransaction = transaction => (dispatch, getState) => {
+export const updateTransaction = (transaction, groupName) => (
+  dispatch,
+  getState
+) => {
   dispatch(setGroupLoading());
   axios
     .put(`/api/transactions/`, transaction, tokenConfig(getState))
     .then(res => {
       dispatch({ type: UPDATE_TRANSACTION, payload: res.data });
+      dispatch(getGroup(groupName));
     })
     .catch(err =>
       dispatch(

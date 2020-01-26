@@ -1,5 +1,3 @@
-// import { GET_ERRORS, CLEAR_ERRORS } from "../actions/types";
-
 const initialState = {
   msg: {}, // comes from server.
   status: null, // comes from server
