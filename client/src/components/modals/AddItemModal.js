@@ -64,8 +64,8 @@ class AddItemModal extends Component {
     const name = e.target.value.toLowerCase();
 
     const user = this.props.group.group.users.find(user => user.name === name);
-    console.log(this.props.group.group.users);
-    console.log(user);
+    // console.log(this.props.group.group.users);
+    // console.log(user);
     user
       ? this.setState({ [e.target.name]: user._id })
       : this.setState({ [e.target.name]: "" });

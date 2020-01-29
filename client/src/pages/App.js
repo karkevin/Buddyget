@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./Home";
 import Welcome from "./Welcome";
 import Form from "./Form";
+import Activity from "./Activity";
 
 // load user dispatch function
 import { loadUser } from "../redux/actions/authActions";
@@ -48,6 +49,12 @@ class App extends Component {
           <Route
             path="/app"
             render={() => (this.props.authenticated ? <Home /> : <Welcome />)}
+          />
+          <Route
+            path="/activity"
+            render={() =>
+              this.props.authenticated ? <Activity /> : <Welcome />
+            }
           />
         </Switch>
       </Router>
