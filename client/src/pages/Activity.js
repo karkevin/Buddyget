@@ -4,7 +4,10 @@ import BottomMenu from "../components/BottomMenu";
 
 export default function Activity() {
   return (
-    <div className="h-screen bg-blue-500">
+    <div>
+      <div className="h-screen flex justify-center items-center">
+        Coming Soon!
+      </div>
       <BottomMenu page="activity" />
     </div>
   );
