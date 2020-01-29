@@ -69,7 +69,6 @@ class Form extends Component {
       const { name, group } = this.state;
       this.props.registerUser({ group, name, email, password });
     } else if (this.props.title === "Login") {
-      console.log("logging");
       this.props.loginUser({ email, password });
     }
   };
@@ -81,7 +80,6 @@ class Form extends Component {
   };
 
   render() {
-    const hey = arrayToObject(this.props.items);
     return (
       <Fragment>
         <div className="flex justify-center mt-2 mb-4 md:mb-8">

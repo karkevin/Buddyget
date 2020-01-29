@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import TransactionModal from "./modals/TransactionModal";
 
-const capitalize = name => {
-  return name.charAt(0).toUpperCase() + name.substring(1);
-};
-
 class TransactionBox extends Component {
   state = {
     modal: false
@@ -19,7 +15,6 @@ class TransactionBox extends Component {
     const { source, destination, money } = this.props.transaction;
     const userName = this.props.user.name;
     let other = source.name === userName ? destination.name : source.name;
-    other = capitalize(other);
     const owe =
       (money > 0 && source.name === userName) ||
       (money < 0 && destination.name === userName)

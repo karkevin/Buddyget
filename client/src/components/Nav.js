@@ -1,8 +1,15 @@
 import React, { Component } from "react";
 
-import Logout from "./Logout";
+import { logoutUser } from "../redux/actions/authActions";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 class Nav extends Component {
+  static propTypes = {
+    logoutUser: PropTypes.func.isRequired,
+    authenticated: PropTypes.bool
+  };
   state = {
     // start with the menu closed
     burger: false
@@ -54,7 +61,13 @@ class Nav extends Component {
             </a>
           </div>
           <div className="text-sm sm:flex-grow px-3">
-            <Logout />
+            <Link
+              to="/"
+              onClick={this.props.logoutUser}
+              className="block mt-4 sm:inline-block sm:mt-0 text-blue-200 text-xl font-medium hover:text-white transition-all"
+            >
+              Logout
+            </Link>
           </div>
         </div>
       </nav>
@@ -62,4 +75,8 @@ class Nav extends Component {
   }
 }
 
-export default Nav;
+const mapStateToProps = state => ({
+  authenticated: state.auth.authenticated
+});
+
+export default connect(mapStateToProps, { logoutUser })(Nav);

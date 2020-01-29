@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 
 const addLog = require("../functions").addlog;
-const capitalize = require("../functions").capitalize;
 
 const Transaction = require("../../models/Transaction");
 const auth = require("../../middleware/auth");
@@ -58,11 +57,9 @@ router.put("/", auth, (req, res) => {
     .then(oldTransaction =>
       Transaction.findById(oldTransaction._id).then(transaction => {
         addLog(
-          `Transaction between ${capitalize(
-            oldTransaction.source.name
-          )} and ${capitalize(
+          `Transaction between ${oldTransaction.source.name} and ${
             oldTransaction.destination.name
-          )} changed from ${oldTransaction.money.toFixed(
+          } changed from ${oldTransaction.money.toFixed(
             2
           )} to ${transaction.money.toFixed(2)}`,
           oldTransaction.groupId

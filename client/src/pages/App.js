@@ -1,10 +1,5 @@
-import React, { Component, Fragment } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect
-} from "react-router-dom";
+import React, { Component } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // pages
 import Home from "./Home";
@@ -15,19 +10,17 @@ import Form from "./Form";
 import { loadUser } from "../redux/actions/authActions";
 import { connect } from "react-redux";
 
-const authenticated = false;
-
-const PrivateRoute = props => {
-  const { path, authenticated } = props;
-  console.log(props);
-  return (
-    <Route
-      path={path}
-      authenticated={authenticated}
-      render={() => (authenticated ? <Home /> : <Welcome />)}
-    />
-  );
-};
+// const PrivateRoute = props => {
+//   const { path, authenticated } = props;
+//   console.log(props);
+//   return (
+//     <Route
+//       path={path}
+//       authenticated={authenticated}
+//       render={() => (authenticated ? <Home /> : <Welcome />)}
+//     />
+//   );
+// };
 
 class App extends Component {
   componentDidMount() {

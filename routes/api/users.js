@@ -23,7 +23,7 @@ router.post("/", (req, res) => {
       if (user) return res.status(400).json({ msg: "User already exists" });
 
       const newUser = new User({
-        name,
+        name: name.charAt(0).toUpperCase() + name.toLowerCase().substring(1),
         email,
         password,
         group

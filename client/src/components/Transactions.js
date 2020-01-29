@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import TransactionBox from "./TransactionBox";
-import { getGroup } from "../redux/actions/groupActions";
+// import { getGroup } from "../redux/actions/groupActions";
 
 import { connect } from "react-redux";
 

@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 
 const addLog = require("../functions").addlog;
-const capitalize = require("../functions").capitalize;
 
 // auth middleware
 const auth = require("../../middleware/auth");
@@ -118,7 +117,7 @@ router.post("/", auth, (req, res) => {
         .populate("buyer buyerGroup", "-password")
         .then(item => {
           addLog(
-            `${capitalize(item.buyer.name)} spent ${price} at ${location}`,
+            `${item.buyer.name} spent ${price} at ${location}`,
             item.groupId
           );
           return res.json(item);
@@ -175,9 +174,9 @@ router.put("/:id", auth, (req, res) => {
         .populate("buyer buyerGroup", "-password")
         .then(item => {
           addLog(
-            `${capitalize(
+            `${
               item.buyer.name
-            )} updated ${updateArray.toString()} at ${location}`,
+            } updated ${updateArray.toString()} at ${location}`,
             item.groupId
           );
           return res.json(item);
@@ -203,10 +202,7 @@ router.delete("/:id", auth, (req, res) => {
       updateTransaction(item.buyer._id, itemBuyerGroup, splitPrice);
       item.remove().then(delItem => {
         const { buyer, price, location, groupId } = delItem;
-        addLog(
-          `${capitalize(buyer.name)} deleted ${price} at ${location}`,
-          groupId
-        );
+        addLog(`${buyer.name} deleted ${price} at ${location}`, groupId);
         return res.json(delItem);
       });
     })

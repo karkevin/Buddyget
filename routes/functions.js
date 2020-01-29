@@ -1,10 +1,7 @@
 const Group = require("../models/Group");
 
-// capitalizes a string.
+// adds a log after action.
 module.exports = {
-  capitalize: function(name) {
-    return name.charAt(0).toUpperCase() + name.substring(1);
-  },
   addlog: function(description, groupId) {
     Group.findByIdAndUpdate(groupId, {
       $push: {

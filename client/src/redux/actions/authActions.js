@@ -14,6 +14,24 @@ import {
   REGISTER_SUCCESS
 } from "./types";
 
+// initializes the axios request header to send along a token to the database.
+export const tokenConfig = getState => {
+  // get token from localstorage
+  const token = getState().auth.token;
+
+  const config = {
+    headers: {
+      "Content-type": "application/json"
+    }
+  };
+
+  // if token exists, add it to the axios request header
+  if (token) {
+    config.headers["x-auth-token"] = token;
+  }
+  return config;
+};
+
 /* check token and load user.
  * Must get token from state.
  */
@@ -103,22 +121,4 @@ export const logoutUser = () => dispatch => {
   dispatch({
     type: LOGOUT_SUCCESS
   });
-};
-
-// initializes the axios request header to send along a token to the database.
-export const tokenConfig = getState => {
-  // get token from localstorage
-  const token = getState().auth.token;
-
-  const config = {
-    headers: {
-      "Content-type": "application/json"
-    }
-  };
-
-  // if token exists, add it to the axios request header
-  if (token) {
-    config.headers["x-auth-token"] = token;
-  }
-  return config;
 };
