@@ -8,7 +8,7 @@ const user = {
   group: "bean"
 };
 
-it(`/POST User`, async () => {
+it(`/POST new user`, async () => {
   try {
     let res = await chai
       .request(app)
@@ -38,7 +38,7 @@ it(`/POST User`, async () => {
   }
 });
 
-it("/POST Auth", async () => {
+it("/POST authenticate user", async () => {
   const auth = {
     email: "sarah@gmail.com",
     password: "12345"
@@ -58,7 +58,7 @@ it("/POST Auth", async () => {
   }
 });
 
-it("/GET Auth", async () => {
+it("/GET/user get user data", async () => {
   const auth = {
     email: "sarah@gmail.com",
     password: "12345"

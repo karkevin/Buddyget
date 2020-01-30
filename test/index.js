@@ -1,12 +1,4 @@
-process.env.NODE_ENV = "test";
-
 const db = require("../db");
-
-const mongoose = require("mongoose");
-const Item = require("../models/Item");
-
-const common = require("./common");
-const { expect, chai } = common;
 
 const importTest = (name, path) => {
   describe(name, function() {
@@ -15,20 +7,24 @@ const importTest = (name, path) => {
 };
 
 describe("Testing", () => {
-  before(done => {
-    db.open()
-      .then(() => {
-        done();
-      })
-      .catch(done => console.log(done));
+  before(async () => {
+    try {
+      await db.open();
+    } catch (err) {
+      err => console.log(err);
+    }
   });
 
-  after(done => {
-    db.close()
-      .then(() => done())
-      .catch(done => console.log(done));
+  after(async () => {
+    try {
+      await db.close();
+    } catch (err) {
+      err => console.log(err);
+    }
   });
 
   importTest("Group", "./subtest/groupTest");
   importTest("User", "./subtest/userTest");
+  importTest("Item", "./subtest/itemTest");
+  importTest("Transaction", "./subtest/transactionTest");
 });

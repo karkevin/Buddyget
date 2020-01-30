@@ -6,7 +6,7 @@ const auth = require("../../middleware/auth");
 
 const Group = require("../../models/Group");
 
-// @route   GET api/group
+// @route   GET api/groups
 // @desc    Gets all groups
 // @access  Private
 router.get("/", auth, (req, res) => {
@@ -16,7 +16,7 @@ router.get("/", auth, (req, res) => {
     .then(groups => res.json(groups));
 });
 
-// @route   GET api/group/:name
+// @route   GET api/groups/:name
 // @desc    Gets group by name
 // @acess   Private
 router.get("/:name", auth, (req, res) => {
