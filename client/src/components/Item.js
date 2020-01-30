@@ -36,6 +36,7 @@ class Item extends Component {
           item={this.props.item}
           toggle={this.toggleItemModal}
         />
+
         {dateHeader ? (
           <p className="text-left font-bold text-lg mt-8 mb-2">{date}</p>
         ) : null}

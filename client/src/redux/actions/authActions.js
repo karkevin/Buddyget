@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { registerGroup, getGroup } from "./groupActions";
+import { registerGroup, getGroup, setGroupLoading } from "./groupActions";
 
 import { getErrors } from "./errorActions";
 import {
@@ -75,6 +75,7 @@ export const registerUser = ({ name, email, password, group }) => dispatch => {
   axios
     .post(`/api/users`, body, config)
     .then(res => {
+      dispatch(setGroupLoading());
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data
@@ -91,7 +92,7 @@ export const registerUser = ({ name, email, password, group }) => dispatch => {
     });
 };
 
-export const loginUser = ({ email, password }) => dispatch => {
+export const loginUser = ({ email, password }) => async dispatch => {
   const config = {
     headers: {
       "Content-type": "application/json"
@@ -102,6 +103,7 @@ export const loginUser = ({ email, password }) => dispatch => {
   axios
     .post(`/api/auth`, body, config)
     .then(res => {
+      dispatch(setGroupLoading());
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data

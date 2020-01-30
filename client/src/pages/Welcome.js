@@ -3,7 +3,7 @@ import React, { Fragment } from "react";
 // Components
 import Buttons from "../components/Buttons";
 import Card from "../components/Card";
-import Footer from "../components/Footer";
+import Footer from "../components/layout/Footer";
 import Title from "../components/Title";
 
 // assets

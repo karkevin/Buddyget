@@ -6,6 +6,7 @@ import Home from "./Home";
 import Welcome from "./Welcome";
 import Form from "./Form";
 import Activity from "./Activity";
+import Loading from "./Loading";
 
 // load user dispatch function
 import { loadUser } from "../redux/actions/authActions";
@@ -28,6 +29,15 @@ class App extends Component {
     this.props.loadUser();
   }
 
+  renderApp = Component => {
+    if (this.props.authLoading || this.props.groupLoading) {
+      return <Loading />;
+    } else if (!this.props.authenticated) {
+      return <Welcome />;
+    } else {
+      return <Component />;
+    }
+  };
   render() {
     return (
       <Router>
@@ -46,14 +56,13 @@ class App extends Component {
               />
             )}
           />
-          <Route
-            path="/app"
-            render={() => (this.props.authenticated ? <Home /> : <Welcome />)}
-          />
+          <Route path="/app" render={() => this.renderApp(Home)} />
           <Route
             path="/activity"
             render={() =>
-              this.props.authenticated ? <Activity /> : <Welcome />
+              window.innerWidth < 768
+                ? this.renderApp(Activity)
+                : this.renderApp(Home)
             }
           />
         </Switch>
@@ -63,7 +72,10 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  authenticated: state.auth.authenticated
+  authenticated: state.auth.authenticated,
+  authLoading: state.auth.loading,
+  groupLoading: state.group.loading,
+  itemsLoading: state.item.loading
 });
 
 export default connect(mapStateToProps, { loadUser })(App);

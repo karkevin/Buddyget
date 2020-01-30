@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 
 class Transaction extends Component {
   getTransactions = () => {
-    if (!this.props.group.group.transactions) {
+    if (this.props.group.loading) {
       return [];
     } else {
       const filteredTransactions = this.props.group.group.transactions.filter(
@@ -33,12 +33,7 @@ class Transaction extends Component {
     return (
       <div>
         <div id="Expenses" className="text-center">
-          <h1
-            className="font-raleway text-xl mb-6"
-            style={{ marginTop: "6.5rem" }}
-          >
-            Total Expenses:
-          </h1>
+          <h1 className="font-raleway text-xl mb-6">Total Expenses:</h1>
           <p className="font-montserrat text-5xl sm:text-6xl mb-8">
             {`$ ${
               !this.props.group.group.totalExpenses
@@ -50,7 +45,7 @@ class Transaction extends Component {
 
         <div
           id="TransactionBoxes"
-          className="flex flex-wrap justify-center mb-10"
+          className="flex flex-wrap justify-center mb-6"
         >
           {this.getTransactions()}
         </div>
@@ -61,7 +56,8 @@ class Transaction extends Component {
 
 const mapStateToProps = state => ({
   group: state.group,
-  user: state.auth.user
+  user: state.auth.user,
+  authLoading: state.auth.loading
 });
 
 export default connect(mapStateToProps, {})(Transaction);

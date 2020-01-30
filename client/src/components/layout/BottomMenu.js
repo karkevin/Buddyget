@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function BottomMenu(props) {
   return (
-    <div className="md:hidden flex justify-around text-center items-end z-2 fixed bottom-0 bg-gray-100 w-full h-16 p-1">
+    <div className="md:hidden flex justify-around text-center items-end fixed bottom-0 bg-gray-100 w-full h-16 p-1">
       <Link to="/app" className="flex-1 focus:outline-none">
         <div className="flex justify-center items-end">
           <svg

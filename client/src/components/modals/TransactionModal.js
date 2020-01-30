@@ -83,9 +83,10 @@ class TransactionModal extends Component {
         contentLabel="Transaction Modal"
         toggleModal={this.toggle}
         ariaHideApp={false}
-        className="bg-white w-11/12 mt-10 sm:mt-48 m-auto max-w-lg px-4 rounded shadow-lg z-50 overflow-y-auto focus:outline-none"
+        className="bg-white w-11/12 mt-10 sm:mt-48 m-auto max-w-lg px-4 rounded shadow-lg overflow-y-auto focus:outline-none"
         style={{
           overlay: {
+            zIndex: 1000,
             position: "fixed",
             top: 0,
             left: 0,
