@@ -9,6 +9,7 @@
     "server": "env-cmd -f ./config/dev.env nodemon server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "DEBUG=true env-cmd -f ./config/dev.env mocha --timeout 12000",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "repository": {
@@ -32,7 +33,13 @@
     "mongoose": "^5.7.7"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "chai-like": "^1.1.1",
+    "chai-things": "^0.2.0",
     "env-cmd": "^10.0.1",
+    "mocha": "^7.0.1",
+    "mockgoose": "^8.0.4",
     "nodemon": "^1.19.4"
   }
 }

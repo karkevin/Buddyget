@@ -35,30 +35,28 @@ router.post("/", (req, res) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
           if (err) throw err;
           newUser.password = hash;
+          newUser.save().then(user => {
+            jwt.sign(
+              { id: newUser.id },
+              process.env.jwtSecret,
 
-          newUser
-            .save()
-            .then(user => {
-              jwt.sign(
-                { id: newUser.id },
-                process.env.jwtSecret,
-                (err, token) => {
-                  if (err) throw err;
+              (err, token) => {
+                if (err) throw err;
 
-                  updateGroup(user);
-                  res.json({
-                    token,
-                    user: {
-                      id: user.id,
-                      name: user.name,
-                      email: user.email,
-                      group: user.group
-                    }
-                  });
-                }
-              );
-            })
-            .catch(err => res.status(400).json({ msg: "Cannot add user" }));
+                updateGroup(user);
+                res.json({
+                  token,
+                  user: {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    group: user.group
+                  }
+                });
+              }
+            );
+          });
+          // .catch(err => res.status(400).json({ msg: "Cannot add user" }));
         });
       });
     })
