@@ -26,5 +26,4 @@ describe("Testing", () => {
   importTest("Group", "./subtest/groupTest");
   importTest("User", "./subtest/userTest");
   importTest("Item", "./subtest/itemTest");
-  importTest("Transaction", "./subtest/transactionTest");
 });

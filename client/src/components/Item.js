@@ -1,10 +1,23 @@
 import React, { Component } from "react";
 
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { deleteItem, updateItem } from "../redux/actions/itemActions";
 import ItemModal from "./modals/ItemModal";
 
 class Item extends Component {
   state = {
     showItemModal: false
+  };
+
+  initialItem = {
+    buyer: this.props.item.buyer._id,
+    location: this.props.item.location,
+    buyerGroup: this.props.item.buyerGroup.map(user => user._id),
+    date: this.props.item.date,
+    price: this.props.item.price,
+    _id: this.props.item._id,
+    msg: null
   };
 
   toggleItemModal = () => {
@@ -22,8 +35,7 @@ class Item extends Component {
 
   render() {
     // buyer is the an object
-    var buyer = this.props.item.buyer.name;
-    buyer = buyer.charAt(0).toUpperCase() + buyer.slice(1);
+    const buyer = this.props.item.buyer.name;
     const { location } = this.props.item;
     const { dateHeader } = this.props;
     const price = this.props.item.price.toFixed(2);
@@ -33,8 +45,12 @@ class Item extends Component {
       <div>
         <ItemModal
           modal={this.state.showItemModal}
-          item={this.props.item}
           toggle={this.toggleItemModal}
+          action={this.props.updateItem}
+          delete={this.props.deleteItem}
+          initialItem={this.initialItem}
+          item={this.props.item}
+          name="Update"
         />
 
         {dateHeader ? (
@@ -78,4 +94,7 @@ class Item extends Component {
   }
 }
 
-export default Item;
+export default connect(null, {
+  deleteItem,
+  updateItem
+})(Item);

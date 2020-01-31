@@ -6,19 +6,12 @@ import { Link } from "react-scroll";
 // components
 import Transactions from "../components/Transactions";
 import ItemList from "../components/ItemList";
-import AddItemModal from "../components/modals/AddItemModal";
+import AddItem from "../components/AddItem";
+// import AddItemModal from "../components/modals/AddItemModal";
 import Layout from "../components/layout/Layout";
 import Activity from "./Activity";
 
 class Home extends Component {
-  state = {
-    showItemModal: false
-  };
-
-  toggle = () => {
-    this.setState({ showItemModal: !this.state.showItemModal });
-  };
-
   render() {
     return (
       <Layout page="app">
@@ -68,19 +61,8 @@ class Home extends Component {
           </div>
         </div>
         <div className="mb-24"></div>
-        <AddItemModal modal={this.state.showItemModal} toggle={this.toggle} />
-        <button
-          className="z-10 fixed bottom-0 left-1/2 text-center text-white font-bold 
-              shadow-card block h-12 w-12 z-1 rounded-full text-4xl mx-auto mb-8 focus:outline-none 
-              bg-violet hover:bg-violet-dark transition-bg md:w-64 md:text-2xl md:rounded-lg"
-          style={{
-            transform: "translate(-50%, 0)"
-          }}
-          onClick={this.toggle}
-        >
-          <p className="md:hidden">+</p>
-          <p className="hidden md:block">ADD EXPENSE</p>
-        </button>
+
+        <AddItem />
       </Layout>
     );
   }

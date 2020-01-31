@@ -25,7 +25,6 @@ class ItemList extends Component {
   // Precondition: items.loading === False
   renderList = items => {
     let currDate = null;
-    console.log(this.props.group.group.id);
     return (
       <div
         name="ItemList"

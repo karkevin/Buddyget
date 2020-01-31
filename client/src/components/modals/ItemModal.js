@@ -1,16 +1,13 @@
 import React, { Component } from "react";
 import Modal from "react-modal";
+import ModalItem from "./ModalItem";
 
 import { connect } from "react-redux";
-import { deleteItem, updateItem } from "../../redux/actions/itemActions";
 import { clearErrors } from "../../redux/actions/errorActions";
 import PropTypes from "prop-types";
 
-// update/delete from here, depending on this.state's values
 class ItemModal extends Component {
   static propTypes = {
-    deleteItem: PropTypes.func.isRequired,
-    updateItem: PropTypes.func.isRequired,
     clearErrors: PropTypes.func.isRequired,
     group: PropTypes.object.isRequired,
     error: PropTypes.object.isRequired,
@@ -18,51 +15,25 @@ class ItemModal extends Component {
     toggle: PropTypes.func.isRequired
   };
 
-  initialState = {
-    buyer: this.props.item.buyer._id,
-    location: this.props.item.location,
-    buyerGroup: this.props.item.buyerGroup.map(user => user._id),
-    date: this.props.item.date,
-    price: this.props.item.price,
-    _id: this.props.item._id,
-    msg: null
-  };
-
-  state = this.initialState;
+  state = this.props.initialItem;
 
   componentDidUpdate(prevProps) {
-    const { error, item } = this.props;
+    const { error } = this.props;
     if (error !== prevProps.error) {
+      // check for login error
       if (error.id === "ITEM_FAIL") {
         this.setState({ msg: error.msg });
       } else {
         this.setState({ msg: null });
       }
-    } else if (this.props.modal && item !== prevProps.item) {
-      // update initialState to reflect state changes.
-      this.initialState = {
-        buyer: this.props.item.buyer._id,
-        location: this.props.item.location,
-        buyerGroup: this.props.item.buyerGroup.map(user => user._id),
-        date: this.props.item.date,
-        price: this.props.item.price,
-        _id: this.props.item._id,
-        msg: null
-      };
+    } else if (
+      prevProps.itemsLoading &&
+      !this.props.itemsLoading &&
+      this.props.modal
+    ) {
       this.toggle();
     }
   }
-
-  // updates based on user ID.
-  buyerChange = e => {
-    const name = e.target.value;
-
-    const user = this.props.group.group.users.find(user => user.name === name);
-
-    user
-      ? this.setState({ [e.target.name]: user._id })
-      : this.setState({ [e.target.name]: "" });
-  };
 
   // for normal form changes
   onChange = e => {
@@ -75,13 +46,21 @@ class ItemModal extends Component {
     }
   };
 
+  // updates based on user ID.
+  buyerChange = e => {
+    const name = e.target.value;
+    const user = this.props.group.group.users.find(user => user.name === name);
+    user
+      ? this.setState({ [e.target.name]: user._id })
+      : this.setState({ [e.target.name]: "" });
+  };
+
   checkUsers = e => {
     // The clicked user.
     const userId = e.target.value;
     if (this.state.buyerGroup.indexOf(userId) >= 0) {
       return this.state.buyerGroup.filter(id => id !== userId);
     }
-
     // element is not in the list => add to list.
     return [...this.state.buyerGroup, userId];
   };
@@ -93,32 +72,29 @@ class ItemModal extends Component {
 
   // when delete button is clicked
   deleteItem = () => {
-    this.props.deleteItem(this.state._id);
+    this.props.delete(this.state._id);
   };
 
-  // Form submission to update an item
+  // For form submissions.
   onSubmit = e => {
     e.preventDefault();
 
-    const { buyer, price, location, buyerGroup, date, _id } = this.state;
-
+    const { buyer, price, location, buyerGroup, date } = this.state;
+    const groupId = this.props.group.group._id;
     const newItem = {
       buyer,
       price,
       location,
       buyerGroup,
-      date,
-      _id
+      date
     };
+    // console.log(this.state._id);
+    this.props.initialItem.hasOwnProperty("_id")
+      ? (newItem["_id"] = this.state._id)
+      : (newItem["groupId"] = groupId);
 
-    // Add item via the addItem action
-    this.props.updateItem(newItem);
-  };
-
-  toggle = () => {
-    if (this.state.msg) this.props.clearErrors();
-    this.setState(this.initialState);
-    this.props.toggle();
+    // Update/add action
+    this.props.action(newItem);
   };
 
   getUsers = () => {
@@ -129,13 +105,19 @@ class ItemModal extends Component {
     }
   };
 
+  // local toggle for the modal.
+  toggle = () => {
+    if (this.state.msg) this.props.clearErrors();
+    this.setState(this.props.initialItem);
+    this.props.toggle();
+  };
+
   render() {
     const users = this.getUsers();
-
     return (
       <Modal
         isOpen={this.props.modal}
-        contentLabel="Item Edit Modal"
+        contentLabel="Item Modal"
         ariaHideApp={false}
         className="bg-white w-11/12 mt-5 sm:mt-16 m-auto md:mt-6 px-4 max-w-lg rounded shadow-lg overflow-y-auto focus:outline-none"
         style={{
@@ -151,14 +133,17 @@ class ItemModal extends Component {
         }}
       >
         <div className="flex justify-between py-2 mb-2">
-          <p className="text-xl ">Edit Item</p>
+          <p className="text-xl ">{`${this.props.name} Item`}</p>
           <div className="flex">
-            <button
-              onClick={this.deleteItem}
-              className="text-lg text-white mr-8 px-1 rounded bg-red-600 hover:bg-red-700 focus:outline-none"
-            >
-              Delete
-            </button>
+            {this.props.delete ? (
+              <button
+                onClick={this.deleteItem}
+                className="text-lg text-white mr-8 px-1 rounded bg-red-600 hover:bg-red-700 focus:outline-none"
+              >
+                Delete
+              </button>
+            ) : null}
+
             <button
               className="text-lg px-2 rounded bg-red-400 hover:bg-red-500 focus:outline-none"
               onClick={this.toggle}
@@ -178,39 +163,26 @@ class ItemModal extends Component {
 
         <hr />
         <form className="mt-2 mb-8" onSubmit={this.onSubmit}>
-          <div className="mb-4">
-            <label className="block my-3">Buyer:</label>
-            <input
-              type="text"
-              name="buyer"
-              onChange={this.buyerChange}
-              className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
-              defaultValue={this.props.item.buyer.name}
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block my-3">Location:</label>
-            <input
-              type="text"
-              name="location"
-              onChange={this.onChange}
-              className="shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
-              defaultValue={this.state.location}
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block my-3">Price:</label>
-            <input
-              type="number"
-              name="price"
-              step=".01"
-              onChange={this.onChange}
-              className="font-montserrat shadow appearance-none w-full py-1 px-2 focus:outline-none rounded border border-gray-500 border-solid"
-              defaultValue={this.state.price}
-            />
-          </div>
+          <ModalItem
+            name="buyer"
+            change={this.buyerChange}
+            value={this.props.item.buyer.name}
+            type="text"
+          />
+          <ModalItem
+            name="location"
+            change={this.onChange}
+            value={this.state.location}
+            type="text"
+          />
+          <ModalItem
+            name="price"
+            change={this.onChange}
+            value={this.state.price ? this.state.price : null}
+            type="text"
+          />
           <div className="mb-5">
-            <label className="block my-3">BuyerGroup:</label>
+            <label className="block my-3">Buyer Group:</label>
             <div className="flex flex-wrap items-center justify-start">
               {users.map(user => (
                 <span className="mr-8" key={user._id}>
@@ -242,7 +214,7 @@ class ItemModal extends Component {
             />
           </div>
           <button className="flex bg-blue-500 hover:bg-blue-600 mx-auto mt-8 px-5 py-1 rounded text-white focus:outline-none items-center">
-            Update Item
+            {`${this.props.name} Item`}
           </button>
         </form>
       </Modal>
@@ -250,14 +222,10 @@ class ItemModal extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
   group: state.group,
   error: state.error,
-  item: state.item.items[state.item.items.indexOf(ownProps.item)]
+  itemsLoading: state.item.loading
 });
 
-export default connect(mapStateToProps, {
-  deleteItem,
-  updateItem,
-  clearErrors
-})(ItemModal);
+export default connect(mapStateToProps, { clearErrors })(ItemModal);

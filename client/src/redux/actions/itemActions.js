@@ -35,6 +35,7 @@ export const getGroupItems = groupId => (dispatch, getState) => {
 };
 
 export const addItem = item => (dispatch, getState) => {
+  dispatch(setItemsLoading());
   axios
     .post(`/api/items`, item, tokenConfig(getState))
     .then(res => {
