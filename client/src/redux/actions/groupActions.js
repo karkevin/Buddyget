@@ -21,6 +21,7 @@ export const setGroupLoading = () => {
  * Registers a group.
  */
 export const registerGroup = name => dispatch => {
+  dispatch(setGroupLoading());
   //headers
   const config = {
     headers: {

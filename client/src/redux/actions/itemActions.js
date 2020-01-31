@@ -5,9 +5,6 @@ import { getGroup } from "./groupActions";
 
 import {
   GET_GROUP_ITEMS,
-  // GET_ITEMS,
-  // GET_USER_ITEMS,
-  // GET_ITEM_ID,
   ADD_ITEM,
   UPDATE_ITEM,
   DELETE_ITEM,

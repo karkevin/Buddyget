@@ -6,8 +6,6 @@ const initialState = {
 const updateTransaction = (state, payload) => {
   const group = { ...state.group };
 
-  console.log(group);
-
   const updated = group.transactions.map(transaction => {
     const clone = JSON.parse(JSON.stringify(transaction));
     if (clone._id === payload._id) {
@@ -17,7 +15,6 @@ const updateTransaction = (state, payload) => {
   });
 
   group.transactions = updated;
-  console.log(group);
 
   return group;
 };

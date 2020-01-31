@@ -6,6 +6,11 @@ import { deleteItem, updateItem } from "../redux/actions/itemActions";
 import ItemModal from "./modals/ItemModal";
 
 class Item extends Component {
+  static propTypes = {
+    deleteItem: PropTypes.func.isRequired,
+    updateItem: PropTypes.func.isRequired
+  };
+
   state = {
     showItemModal: false
   };

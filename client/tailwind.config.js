@@ -16,11 +16,7 @@ module.exports = {
       height: {
         "72": "18rem",
         "80": "20rem",
-        "50vh": "50vh",
-        "60vh": "60vh",
-        "70vh": "70vh",
-        "80vh": "80vh",
-        "90vh": "90vh"
+        "80vh": "80vh"
       },
       inset: {
         "1/2": "50%"
