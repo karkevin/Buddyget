@@ -1,12 +1,37 @@
 const common = require("../common");
 const { expect, chai, app } = common;
 
+const groupName = "bean";
+
 const user = {
   name: "Sarah",
   email: "sarah@gmail.com",
   password: "12345",
-  group: "bean"
+  group: groupName
 };
+
+const User = require("../../models/User");
+const Group = require("../../models/Group");
+
+before(async () => {
+  try {
+    const res = await chai
+      .request(app)
+      .post("/api/groups")
+      .send({ name: groupName });
+
+    expect(res).to.have.status(200);
+    expect(res.body).to.be.a("object");
+    expect(res.body.name).to.equal(groupName);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+after(async () => {
+  await User.deleteMany({});
+  await Group.deleteMany({});
+});
 
 it(`/POST new user`, async () => {
   try {
@@ -17,7 +42,7 @@ it(`/POST new user`, async () => {
 
     expect(res).to.have.status(200);
     expect(res.body).to.be.a("object");
-    const { name, email, group, id } = res.body.user;
+    const { name, email, group, _id } = res.body.user;
     token = res.body.token;
     expect(name).to.equal(user.name);
     expect(email).to.equal(user.email);
@@ -32,7 +57,7 @@ it(`/POST new user`, async () => {
     expect(res.body).to.have.property("users");
     expect(res.body.users)
       .to.be.an("array")
-      .that.contains.something.like({ _id: id });
+      .that.contains.something.like({ _id });
   } catch (err) {
     console.log(err);
   }

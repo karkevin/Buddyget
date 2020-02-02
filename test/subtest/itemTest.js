@@ -8,23 +8,27 @@ let groupObject = {};
 let item = {};
 
 before(async () => {
-  const auth = {
+  const groupName = "bean";
+  const user = {
+    name: "Sarah",
     email: "sarah@gmail.com",
-    password: "12345"
+    password: "12345",
+    group: groupName
   };
+
   try {
-    let res = await chai
+    const res = await chai
       .request(app)
-      .post("/api/auth")
-      .send(auth);
+      .post("/api/groups")
+      .send({ name: groupName });
 
-    userObject = res.body;
-
-    const res2 = await chai
+    groupObject = res.body;
+    const userRes = await chai
       .request(app)
-      .get(`/api/groups/${userObject.user.group}`)
-      .set("x-auth-token", userObject.token);
-    groupObject = res2.body;
+      .post("/api/users")
+      .send(user);
+
+    userObject = userRes.body;
 
     item = {
       buyer: userObject.user._id,
@@ -39,6 +43,12 @@ before(async () => {
 });
 
 beforeEach(async () => {
+  await Item.deleteMany({});
+});
+
+after(async () => {
+  await Group.deleteMany({});
+  await User.deleteMany({});
   await Item.deleteMany({});
 });
 
