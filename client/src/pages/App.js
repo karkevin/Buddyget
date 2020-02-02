@@ -26,13 +26,15 @@ import { connect } from "react-redux";
 
 export class App extends Component {
   componentDidMount() {
-    this.props.loadUser();
+    if (this.props.auth.token) {
+      this.props.loadUser();
+    }
   }
 
   renderApp = Component => {
     if (this.props.authLoading || this.props.groupLoading) {
       return <Loading />;
-    } else if (!this.props.authenticated) {
+    } else if (!this.props.auth.authenticated) {
       return <Welcome />;
     } else {
       return <Component />;
@@ -72,7 +74,7 @@ export class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  authenticated: state.auth.authenticated,
+  auth: state.auth,
   authLoading: state.auth.loading,
   groupLoading: state.group.loading,
   itemsLoading: state.item.loading
