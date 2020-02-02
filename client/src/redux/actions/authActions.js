@@ -66,8 +66,7 @@ export const registerUser = ({ name, email, password, group }) => dispatch => {
   };
 
   // send lower case name to database.
-  const lowerCaseName = name.toLowerCase();
-  const body = JSON.stringify({ name: lowerCaseName, email, password, group });
+  const body = JSON.stringify({ name, email, password, group });
 
   // TODO change dispatch to disallow users to be added to a group they don't belong to.
   dispatch(registerGroup(group));
