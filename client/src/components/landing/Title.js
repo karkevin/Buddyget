@@ -1,8 +1,8 @@
 import React from "react";
 
 // assets
-import logo from "../../public/logo.png";
-import favicon from "../../public/favicon.png";
+import logo from "../../../public/logo.png";
+import favicon from "../../../public/favicon.png";
 
 export default function Title() {
   return (

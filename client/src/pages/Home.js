@@ -7,7 +7,6 @@ import { Link } from "react-scroll";
 import Transactions from "../components/Transactions";
 import ItemList from "../components/ItemList";
 import AddItem from "../components/AddItem";
-// import AddItemModal from "../components/modals/AddItemModal";
 import Layout from "../components/layout/Layout";
 import Activity from "./Activity";
 
@@ -17,7 +16,7 @@ class Home extends Component {
       <Layout page="app">
         <Transactions />
         <div className="flex justify-center">
-          <Link to="dashboard" smooth={true} duration={1050} offset={-80}>
+          <Link to="dashboard" smooth={true} duration={1050} offset={-40}>
             <button className="text-center font-medium text-xl bg-gray-400 py-1 px-8 mb-6 rounded-lg shadow-card focus:outline-none hover:bg-gray-500 transition-bg">
               <p className="md:hidden">Expenses</p>
               <p className="hidden md:block">Dashboard</p>
@@ -53,7 +52,7 @@ class Home extends Component {
           </Link>
         </div>
         <div id="dashboard" className="flex md:pt-10">
-          <div className="flex-1">
+          <div className="flex-2">
             <ItemList />
           </div>
           <div className="flex-1 hidden md:block">
@@ -61,7 +60,6 @@ class Home extends Component {
           </div>
         </div>
         <div className="mb-24"></div>
-
         <AddItem />
       </Layout>
     );

@@ -13,7 +13,7 @@ import left from "../../public/left.png";
 import right from "../../public/right.png";
 
 // components
-import Title from "../components/Title";
+import Title from "../components/landing/Title";
 import FormInput from "../components/FormInput";
 
 // Converts a JS array to object for the state.

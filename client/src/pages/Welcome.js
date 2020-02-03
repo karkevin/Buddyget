@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
 
 // Components
-import Buttons from "../components/Buttons";
-import Card from "../components/Card";
+import Buttons from "../components/landing/Buttons";
+import Card from "../components/landing/Card";
 import Footer from "../components/layout/Footer";
-import Title from "../components/Title";
+import Title from "../components/landing/Title";
 
 // assets
 import buddyget from "../../public/buddyget.png";

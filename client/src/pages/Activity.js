@@ -8,7 +8,7 @@ class Activity extends Component {
   activityBox = (
     <div>
       <p className="text-center text-3xl mb-8">Activity</p>
-      <div className="m-auto shadow-lg overflow-y-scroll px-4 pt-6 max-w-xl md:h-80vh rounded">
+      <div className="m-auto shadow-lg overflow-y-scroll px-4 pt-6 max-w-xl md:h-70vh rounded">
         {this.props.group.group.logs.reverse().map(log => {
           return <ActivityItem key={log._id} log={log} />;
         })}
