@@ -4,10 +4,10 @@ const compression = require("compression");
 
 const app = express();
 
-app.use(compression());
-
 // used to parse incoming requests with JSON payload.
 app.use(express.json());
+
+app.use(compression());
 
 // When user hits the endpoint should refer to the code to that endpoint.
 app.use("/api/items", require("./routes/api/items"));
