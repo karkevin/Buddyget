@@ -1,8 +1,9 @@
-@tailwind base;
+/* purgecss start ignore */
+@tailwind  base;
+@tailwind  components;
+/* purgecss end ignore */
 
-@tailwind components;
-
-@tailwind utilities;
+@tailwind  utilities;
 
 @import url("https://fonts.googleapis.com/css?family=Montserrat|Raleway:400,500,700|Roboto:400,700&display=swap");
 
