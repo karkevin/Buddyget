@@ -17,10 +17,10 @@ router.post("/", (req, res) => {
 
   // check for user
   User.findOne({ email })
-    .then(user => {
+    .then((user) => {
       if (!user) return res.status(400).json({ msg: "User doesn't exist" });
 
-      bcrypt.compare(password, user.password).then(isMatch => {
+      bcrypt.compare(password, user.password).then((isMatch) => {
         if (!isMatch) return res.status(400).json({ msg: "Invalid password" });
 
         // if there is a match, send user and token.
@@ -36,14 +36,14 @@ router.post("/", (req, res) => {
                 _id: user.id,
                 name: user.name,
                 email: user.email,
-                group: user.group
-              }
+                group: user.group,
+              },
             });
           }
         );
       });
     })
-    .catch(err => res.status(400).json({ msg: "Error checking user." }));
+    .catch((err) => res.status(400).json({ msg: "Error checking user." }));
 });
 
 // @route   GET api/auth/user
@@ -52,7 +52,7 @@ router.post("/", (req, res) => {
 router.get("/user", auth, (req, res) => {
   User.findById(req.user.id)
     .select("-password")
-    .then(user => res.json(user));
+    .then((user) => res.json(user));
 });
 
 module.exports = router;

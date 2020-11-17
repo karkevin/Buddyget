@@ -1,5 +1,6 @@
 /node_modules
 /config
+admin.js
 
 # misc
 .DS_Store
